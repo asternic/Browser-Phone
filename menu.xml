@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+  <menulist>
+    <menuitem menuid="webphone"       desc="Web Phone"     parent="my_extension"      module="yes" link="https://{IP_SERVER}:8089/static/index.html" order="9">
+        <permissions>
+            <group id="1" name="administrator" desc="total access"></group>
+            <group id="2" name="Operator" desc="Operator"></group>
+            <group id="3" name="extension" desc="extension user"></group>
+        </permissions>
+    </menuitem>
+  </menulist>
+</module>
+

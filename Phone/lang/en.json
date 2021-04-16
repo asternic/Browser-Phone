@@ -266,5 +266,9 @@
     "call_recordings" : "Call Recordings",
     "save_as" : "Save As",
     "right_click_and_select_save_link_as" : "Right click and select Save Link As",
-    "send" : "Send"
+    "send" : "Send",
+    "warning" : "Warning",
+    "associate_extension_required": "You must associate an extension to this user account",
+    "associate_extension_required_unauthorized": "No extension associated. Ask your administrator to configure that for you.",
+    "invalid_session": "Invalid Session. Please log back into Issabel"
 }

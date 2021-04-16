@@ -91,8 +91,8 @@ var wssServer = getDbItem("wssServer", null);           // eg: raspberrypi.local
 var profileUserID = getDbItem("profileUserID", null);   // Internal reference ID. (DON'T CHANGE THIS!)
 var profileUser = getDbItem("profileUser", null);       // eg: 100
 var profileName = getDbItem("profileName", null);       // eg: Keyla James
-var WebSocketPort = getDbItem("WebSocketPort", null);   // eg: 444 | 4443
-var ServerPath = getDbItem("ServerPath", null);         // eg: /ws
+var WebSocketPort = getDbItem("WebSocketPort", '8089');   // eg: 444 | 4443
+var ServerPath = getDbItem("ServerPath", '/ws');         // eg: /ws
 var SipUsername = getDbItem("SipUsername", null);       // eg: webrtc
 var SipPassword = getDbItem("SipPassword", null);       // eg: webrtc
 
@@ -100,7 +100,7 @@ var TransportConnectionTimeout = parseInt(getDbItem("TransportConnectionTimeout"
 var TransportReconnectionAttempts = parseInt(getDbItem("TransportReconnectionAttempts", 99));  // The number of times to attempt to reconnect to a WebSocket when the connection drops.
 var TransportReconnectionTimeout = parseInt(getDbItem("TransportReconnectionTimeout", 15));    // The time in seconds to wait between WebSocket reconnection attempts.
 
-var userAgentStr = getDbItem("UserAgentStr", "Raspberry Phone (SipJS - 0.11.6)");   // Set this to whatever you want.
+var userAgentStr = getDbItem("UserAgentStr", "Issabel Phone (SipJS - 0.11.6)");   // Set this to whatever you want.
 var hostingPrefex = getDbItem("HostingPrefex", "");                                 // Use if hosting off root directiory. eg: "/phone/" or "/static/"
 var RegisterExpires = parseInt(getDbItem("RegisterExpires", 300));                  // Registration expiry time (in seconds)
 var WssInTransport = (getDbItem("WssInTransport", "1") == "1");                     // Set the transport parameter to wss when used in SIP URIs. (Required for Asterisk as it doesnt support Path)
@@ -148,7 +148,8 @@ var AutoAnswerPolicy = getDbItem("AutoAnswerPolicy", "allow");                  
 var DoNotDisturbPolicy = getDbItem("DoNotDisturbPolicy", "allow");                      // allow = user can choose | disabled = feature is disabled | enabled = feature is always on
 var CallWaitingPolicy = getDbItem("CallWaitingPolicy", "allow");                        // allow = user can choose | disabled = feature is disabled | enabled = feature is always on
 var CallRecordingPolicy = getDbItem("CallRecordingPolicy", "allow");                    // allow = user can choose | disabled = feature is disabled | enabled = feature is always on
-var EnableAccountSettings = (getDbItem("EnableAccountSettings", "1") == "1");           // Controls the Account tab in Settings
+//var EnableAccountSettings = (getDbItem("EnableAccountSettings", "1") == "1");           // Controls the Account tab in Settings
+var EnableAccountSettings = false;  // nico
 var EnableAudioVideoSettings = (getDbItem("EnableAudioVideoSettings", "1") == "1");     // Controls the Audio & Video tab in Settings
 var EnableAppearanceSettings = (getDbItem("EnableAppearanceSettings", "1") == "1");     // Controls the Appearance tab in Settings
 var EnableNotificationSettings = (getDbItem("EnableNotificationSettings", "1") == "1"); // Controls the Notifications tab in Settings
@@ -509,51 +510,44 @@ function CreateGroupWindow(){
 function ConfigureExtensionWindow(){
     HidePopup();
 
-    OpenWindow("...", lang.configure_extension , 480, 640, false, true, lang.save, function(){
+    OpenWindow("...", lang.configure_extension , 480, 640, false, true, lang.save, function() {
 
-        // 1 Account
-        if(localDB.getItem("profileUserID") == null) localDB.setItem("profileUserID", uID()); // For first time only
-        localDB.setItem("wssServer", $("#Configure_Account_wssServer").val());
-        localDB.setItem("WebSocketPort", $("#Configure_Account_WebSocketPort").val());
-        localDB.setItem("ServerPath", $("#Configure_Account_ServerPath").val());
-        localDB.setItem("profileUser", $("#Configure_Account_profileUser").val());
-        localDB.setItem("profileName", $("#Configure_Account_profileName").val());
-        localDB.setItem("SipUsername", $("#Configure_Account_SipUsername").val());
-        localDB.setItem("SipPassword", $("#Configure_Account_SipPassword").val());
+               localDB.setItem("InitialConfiguration", "yes");
 
-        // 2 Audio & Video
-        localDB.setItem("AudioOutputId", $("#playbackSrc").val());
-        localDB.setItem("VideoSrcId", $("#previewVideoSrc").val());
-        localDB.setItem("VideoHeight", $("input[name=Settings_Quality]:checked").val());
-        localDB.setItem("FrameRate", $("input[name=Settings_FrameRate]:checked").val());
-        localDB.setItem("AspectRatio", $("input[name=Settings_AspectRatio]:checked").val());
-        localDB.setItem("VideoOrientation", $("input[name=Settings_Oriteation]:checked").val());
-        localDB.setItem("AudioSrcId", $("#microphoneSrc").val());
-        localDB.setItem("AutoGainControl", ($("#Settings_AutoGainControl").is(':checked'))? "1" : "0");
-        localDB.setItem("EchoCancellation", ($("#Settings_EchoCancellation").is(':checked'))? "1" : "0");
-        localDB.setItem("NoiseSuppression", ($("#Settings_NoiseSuppression").is(':checked'))? "1" : "0");
-        localDB.setItem("RingOutputId", $("#ringDevice").val());
+               // 2 Audio & Video
+               localDB.setItem("AudioOutputId", $("#playbackSrc").val());
+               localDB.setItem("VideoSrcId", $("#previewVideoSrc").val());
+               localDB.setItem("VideoHeight", $("input[name=Settings_Quality]:checked").val());
+               localDB.setItem("FrameRate", $("input[name=Settings_FrameRate]:checked").val());
+               localDB.setItem("AspectRatio", $("input[name=Settings_AspectRatio]:checked").val());
+               localDB.setItem("VideoOrientation", $("input[name=Settings_Oriteation]:checked").val());
+               localDB.setItem("AudioSrcId", $("#microphoneSrc").val());
+               localDB.setItem("AutoGainControl", ($("#Settings_AutoGainControl").is(':checked'))? "1" : "0");
+               localDB.setItem("EchoCancellation", ($("#Settings_EchoCancellation").is(':checked'))? "1" : "0");
+               localDB.setItem("NoiseSuppression", ($("#Settings_NoiseSuppression").is(':checked'))? "1" : "0");
+               localDB.setItem("RingOutputId", $("#ringDevice").val());
 
-        // 3 Appearance
-        $("#ImageCanvas").croppie('result', { 
-            type: 'base64', 
-            size: 'viewport', 
-            format: 'png', 
-            quality: 1, 
-            circle: false 
-        }).then(function(base64) {
-            localDB.setItem("profilePicture", base64);
-        });
+               // 3 Appearance
+               $("#ImageCanvas").croppie('result', { 
+                   type: 'base64', 
+                   size: 'viewport', 
+                   format: 'png', 
+                   quality: 1, 
+                   circle: false 
+               }).then(function(base64) {
+                   localDB.setItem("profilePicture", base64);
+               });
 
-        // 4 Notifications
-        localDB.setItem("Notifications", ($("#Settings_Notifications").is(":checked"))? "1" : "0");
+               // 4 Notifications
+               localDB.setItem("Notifications", ($("#Settings_Notifications").is(":checked"))? "1" : "0");
+ 
 
-        Alert(lang.alert_settings, lang.reload_required, function(){
-            window.location.reload();
-        });
+               Alert(lang.alert_settings, lang.reload_required, function(){
+                   window.location.reload();
+               });
 
         // CloseWindow();
-    }, lang.cancel, function(){
+     }, lang.cancel, function(){
         CloseWindow();
     }, function(){
         // DoOnLoad
@@ -628,15 +622,16 @@ function ConfigureExtensionWindow(){
 
     // 1 Account 
     // ==================================================================================
+    //
     var AccountHtml =  "<div class=\"UiWindowField scroller\">";
     AccountHtml += "<div class=UiText>"+ lang.asterisk_server_address +":</div>";
-    AccountHtml += "<div><input id=Configure_Account_wssServer class=UiInputText type=text placeholder='"+ lang.eg_asterisk_server_address +"' value='"+ getDbItem("wssServer", "") +"'></div>";
+    AccountHtml += "<div><input id=Configure_Account_wssServer class=UiInputText type=text placeholder='"+ lang.eg_asterisk_server_address +"' value='"+ getDbItem("wssServer", location.host.split(":")[0]) +"'></div>";
 
     AccountHtml += "<div class=UiText>"+ lang.websocket_port +":</div>";
-    AccountHtml += "<div><input id=Configure_Account_WebSocketPort class=UiInputText type=text placeholder='"+ lang.eg_websocket_port +"' value='"+ getDbItem("WebSocketPort", "") +"'></div>";
+    AccountHtml += "<div><input id=Configure_Account_WebSocketPort class=UiInputText type=text placeholder='"+ lang.eg_websocket_port +"' value='"+ getDbItem("WebSocketPort", 8089) +"'></div>";
 
     AccountHtml += "<div class=UiText>"+ lang.websocket_path +":</div>";
-    AccountHtml += "<div><input id=Configure_Account_ServerPath class=UiInputText type=text placeholder='"+ lang.eg_websocket_path +"' value='"+ getDbItem("ServerPath", "") +"'></div>";
+    AccountHtml += "<div><input id=Configure_Account_ServerPath class=UiInputText type=text placeholder='"+ lang.eg_websocket_path +"' value='"+ getDbItem("ServerPath", "/ws") +"'></div>";
 
     AccountHtml += "<div class=UiText>"+ lang.internal_subscribe_extension +":</div>";
     AccountHtml += "<div><input id=Configure_Account_profileUser class=UiInputText type=text placeholder='"+ lang.eg_internal_subscribe_extension +"' value='"+ getDbItem("profileUser", "") +"'></div>";
@@ -1601,8 +1596,6 @@ function InitUi(){
     if(DisableBuddies == true) $("#BtnAddSomeone").hide();
     if(enabledGroupServices == false) $("#BtnCreateGroup").hide();
 
-    $("#UserDID").html(profileUser);
-    $("#UserCallID").html(profileName);
     $("#UserProfilePic").css("background-image", "url('"+ getPicture("profilePicture") +"')");
     
     $("#txtFindBuddy").attr("placeholder", lang.find_someone)
@@ -1628,33 +1621,75 @@ function InitUi(){
     UpdateUI();
     
     // Check if you account is created
-    if(profileUserID == null ){
-        ConfigureExtensionWindow();
-        return; // Don't load any more, after applying settings, the page must reload.
-    }
+    //
 
-    PopulateBuddyList();
+    $.ajax({
+       url: 'getconf.php',
+       dataType: 'json'
+    }).done(function(data) {
+       if(data.success==false) {
+          if(data.message=='extension not associated') {
+             Alert(lang.associate_extension_required, lang.warning, function(){
+                 window.location.href='/index.php?menu=userlist&action=edit_userExtension&rawmode=yes';
+             });
+          } else if( data.message=='extension not associated unauthorized' ) {
+            Alert(lang.associate_extension_required_unauthorized, lang.warning, function(){
+                 return;
+            });
+          } else {
+            Alert(lang.invalid_session, lang.warning, function(){
+                 return;
+            });
+          }
+       } else {
 
-    // Select Last user
-    if(localDB.getItem("SelectedBuddy") != null){
-        console.log("Selecting previously selected buddy...", localDB.getItem("SelectedBuddy"));
-        SelectBuddy(localDB.getItem("SelectedBuddy"));
-        UpdateUI();
-    }
+          console.log(data);
+          profileUserID = data.extension;
+          wssServer = location.host.split(":")[0];
+          WebSocketPort = 8089;
+          ServerPath = '/ws';
+          profileUser = data.extension;
+          profileName = data.name;
+//localDB.setItem("profileUser", data.extension);
+//localDB.setItem("profileName", data.name);
+          SipUsername = data.extension;
+          SipPassword = data.secret;
 
-    // Show Welcome Screen
-    if(welcomeScreen){
-        if(localDB.getItem("WelcomeScreenAccept") != "yes"){
-            OpenWindow(welcomeScreen, lang.welcome, 480, 800, true, false, lang.accept, function(){
-                localDB.setItem("WelcomeScreenAccept", "yes");
-                CloseWindow();
-            }, null, null, null, null);
-        }
-    }
+          $("#UserDID").html(profileUser);
+          $("#UserCallID").html(profileName);
 
-    PreloadAudioFiles();
 
-    CreateUserAgent();
+          if(localDB.getItem("InitialConfiguration") != "yes"){
+              ConfigureExtensionWindow();
+          }
+
+          PopulateBuddyList();
+
+          // Select Last user
+          if(localDB.getItem("SelectedBuddy") != null){
+              console.log("Selecting previously selected buddy...", localDB.getItem("SelectedBuddy"));
+              SelectBuddy(localDB.getItem("SelectedBuddy"));
+              UpdateUI();
+          }
+
+          // Show Welcome Screen
+          /*
+          if(welcomeScreen){
+              if(localDB.getItem("WelcomeScreenAccept") != "yes"){
+                  OpenWindow(welcomeScreen, lang.welcome, 480, 800, true, false, lang.accept, function(){
+                      localDB.setItem("WelcomeScreenAccept", "yes");
+                      CloseWindow();
+                  }, null, null, null, null);
+              }
+          }*/
+
+          PreloadAudioFiles();
+   
+          CreateUserAgent();
+
+       }
+    });
+ 
 }
 
 function PreloadAudioFiles(){
