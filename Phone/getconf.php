@@ -21,17 +21,23 @@
   +----------------------------------------------------------------------+
 */
 
+$module_name  = basename(getcwd());
+
 require_once "../../libs/misc.lib.php";
-$module_name=basename(getcwd());
-$documentRoot = $_SERVER["DOCUMENT_ROOT"];
-include_once "$documentRoot/libs/paloSantoDB.class.php";
-include_once "$documentRoot/libs/paloSantoACL.class.php";
+include_once "../../modules/address_book/libs/paloSantoAdressBook.class.php";
+include_once "../../libs/paloSantoDB.class.php";
+include_once "../../libs/paloSantoACL.class.php";
+
 session_name("issabelSession");
 session_start();
+
 $issabel_user = (isset($_SESSION["issabel_user"]))?$_SESSION["issabel_user"]:null;
-$pDB = new paloDB("sqlite3:////var/www/db/acl.db");
-$pACL = new paloACL($pDB);
-$isUserAuth = $pACL->isUserAuthorized($issabel_user,"access",$module_name);
+$pDB          = new paloDB("sqlite3:////var/www/db/acl.db");
+$pACL         = new paloACL($pDB);
+$id_user      = $pACL->getIdUser($_SESSION["issabel_user"]);
+$isUserAuth   = $pACL->isUserAuthorized($issabel_user,"access",$module_name);
+$dsnAsterisk  = generarDSNSistema('asteriskuser', 'asterisk','/var/www/html/');
+
 if(!$isUserAuth) { 
     echo '{"success":false, "message":"unauthorized"}';
     die();
@@ -50,8 +56,26 @@ if($extension=='') {
     }
     die();
 }
+$pDB   = new paloDB("sqlite3:////var/www/db/address_book.db");
+$padress_book = new paloAdressBook($pDB);
+$external = $padress_book->getAddressBook(NULL,NULL,NULL,NULL,FALSE,$id_user);
 
-$dsnAsterisk = generarDSNSistema('asteriskuser', 'asterisk','/var/www/html/');
+$final=array();
+foreach($external as $data) {
+    $info = array("ExtensionNumber"=>'',"ContactNumber1"=>$data['home_phone'],"ContactNumber2"=>$data['cell_phone'],"DisplayName"=>$data['name'].' '.$data['lastname'], "Email"=>$data['email'], "Description"=> $data['company'], "Type"=>"contact");
+    $final[] = $info;
+}
+
+
+$internal = $padress_book->getDeviceFreePBX_Completed($dsnAsterisk, 10000,0,'','');
+foreach($internal as $idx=>$data) {
+
+    $info = array("ExtensionNumber"=>$data['id'],"DisplayName"=>$data['description'],"Email"=>$data['email'],"Description"=>$data['description'],"Type"=>"extension");
+    $final[] = $info;
+}
+
+$buddies = json_encode($final);
+
 $pDB = new paloDB($dsnAsterisk);
 $query = "SELECT `name` FROM users WHERE extension='$extension'";
 $row = $pDB->getFirstRowQuery($query, false, array());
@@ -61,6 +85,6 @@ $row = $pDB->getFirstRowQuery($query, false, array());
 $secret = $row[0];
 
 
-echo '{"success":true, "extension": "'.$extension.'","name":"'.$nombre.'", "secret":"'.$secret.'"}';
+echo '{"success":true, "extension": "'.$extension.'","name":"'.$nombre.'", "secret":"'.$secret.'", "buddies":'.$buddies.'}';
 unset($_SESSION);
 session_commit();

@@ -141,7 +141,9 @@ var Language = getDbItem("Language", "auto");    // Overrides the langauage sele
 // Permission Settings
 var EnableTextMessaging = (getDbItem("EnableTextMessaging", "1") == "1");               // Enables the Text Messaging
 var DisableFreeDial = (getDbItem("DisableFreeDial", "0") == "1");                       // Removes the Dial icon in the profile area, users will need to add buddies in order to dial.
-var DisableBuddies = (getDbItem("DisableBuddies", "0") == "1");                         // Removes the Add Someone menu item and icon from the profile area. Buddies will still be created automatically. 
+//var DisableBuddies = (getDbItem("DisableBuddies", "0") == "1");                         // Removes the Add Someone menu item and icon from the profile area. Buddies will still be created automatically. 
+var DisableBuddies = 1;
+
 var EnableTransfer = (getDbItem("EnableTransfer", "1") == "1");                         // Controls Transfering during a call
 var EnableConference = (getDbItem("EnableConference", "1") == "1");                     // Controls Conference during a call
 var AutoAnswerPolicy = getDbItem("AutoAnswerPolicy", "allow");                          // allow = user can choose | disabled = feature is disabled | enabled = feature is always on
@@ -1643,27 +1645,24 @@ function InitUi(){
           }
        } else {
 
-          console.log(data);
           profileUserID = data.extension;
           wssServer = location.host.split(":")[0];
           WebSocketPort = 8089;
           ServerPath = '/ws';
           profileUser = data.extension;
           profileName = data.name;
-//localDB.setItem("profileUser", data.extension);
-//localDB.setItem("profileName", data.name);
           SipUsername = data.extension;
           SipPassword = data.secret;
 
           $("#UserDID").html(profileUser);
           $("#UserCallID").html(profileName);
 
-
           if(localDB.getItem("InitialConfiguration") != "yes"){
               ConfigureExtensionWindow();
           }
-
-          PopulateBuddyList();
+          
+          // PopulateBuddyList();
+          PopulateBuddiesIssabel(data.buddies);
 
           // Select Last user
           if(localDB.getItem("SelectedBuddy") != null){
@@ -7385,6 +7384,77 @@ function AddBuddy(buddyObj, update, focus, subscribe){
     if(subscribe == true) SubscribeBuddy(buddyObj);
     if(focus == true) SelectBuddy(buddyObj.identity);
 }
+
+function PopulateBuddiesIssabel(buddies){
+
+    // check last activity from localstorage
+    var json = JSON.parse(localDB.getItem(profileUserID + "-Buddies"));
+    var lastAct = [];
+
+    if(json !== null) {
+        $.each(json.DataCollection, function (i, item) {
+            if(item.Type == "extension"){
+                lastAct[item.uID]=item.LastActivity;
+            }
+            else if(item.Type == "contact"){
+                lastAct[item.cID]=item.LastActivity;
+            }
+            else if(item.Type == "group"){
+                lastAct[item.gID]=item.LastActivity;
+            }
+        });
+    }
+
+    $.each(buddies, function (i, item) {
+
+        var dateNow = utcDateNow();
+        var id = uID();
+
+        if(item.Type == "extension"){
+            // extension
+
+            useId= item.uID;
+            if(typeof(lastAct[useId])=='undefined') {
+                lastActivity = dateNow;
+            } else {
+                lastActivity = lastAct[useID];
+            }
+
+            var buddy = new Buddy("extension", id, item.DisplayName, item.ExtensionNumber, item.MobileNumber, item.ContactNumber1, item.ContactNumber2, lastActivity, item.Description, item.Email);
+            AddBuddy(buddy, false, false);
+        }
+        else if(item.Type == "contact"){
+            // contact
+            
+            useId= item.cID;
+            if(typeof(lastAct[useId])=='undefined') {
+                lastActivity = dateNow;
+            } else {
+                lastActivity = lastAct[useID];
+            }
+
+
+            var buddy = new Buddy("contact", id, item.DisplayName, "", item.MobileNumber, item.ContactNumber1, item.ContactNumber2, lastActivity, item.Description, item.Email);
+            AddBuddy(buddy, false, false);
+        }
+        else if(item.Type == "group"){
+            // group
+            useId= item.gID;
+            if(typeof(lastAct[useId])=='undefined') {
+                lastActivity = dateNow;
+            } else {
+                lastActivity = lastAct[useID];
+            }
+            var buddy = new Buddy("group", id, item.DisplayName, item.ExtensionNumber, "", "", "", lastActivity, item.MemberCount + " member(s)", item.Email);
+            AddBuddy(buddy, false, false);
+        }
+    });
+
+    // Update List (after add)
+    console.log("Updating Buddy List...");
+    UpdateBuddyList();
+}
+
 function PopulateBuddyList() {
     console.log("Clearing Buddies...");
     Buddies = new Array();
