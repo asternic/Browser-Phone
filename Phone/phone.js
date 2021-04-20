@@ -1704,6 +1704,18 @@ function PreloadAudioFiles(){
     audioBlobs.EarlyMedia_Japan = { file : "Tone_EarlyMedia-Japan.mp3", url : hostingPrefex +"media/Tone_EarlyMedia-Japan.mp3" }
     audioBlobs.EarlyMedia_UK = { file : "Tone_EarlyMedia-UK.mp3", url : hostingPrefex +"media/Tone_EarlyMedia-UK.mp3" }
     audioBlobs.EarlyMedia_US = { file : "Tone_EarlyMedia-US.mp3", url : hostingPrefex +"media/Tone_EarlyMedia-US.mp3" }
+    audioBlobs.dtmf_0 = { file : "0.wav", url : hostingPrefex +"media/0.wav" }
+    audioBlobs.dtmf_1 = { file : "1.wav", url : hostingPrefex +"media/1.wav" }
+    audioBlobs.dtmf_2 = { file : "2.wav", url : hostingPrefex +"media/2.wav" }
+    audioBlobs.dtmf_3 = { file : "3.wav", url : hostingPrefex +"media/3.wav" }
+    audioBlobs.dtmf_4 = { file : "4.wav", url : hostingPrefex +"media/4.wav" }
+    audioBlobs.dtmf_5 = { file : "5.wav", url : hostingPrefex +"media/5.wav" }
+    audioBlobs.dtmf_6 = { file : "6.wav", url : hostingPrefex +"media/6.wav" }
+    audioBlobs.dtmf_7 = { file : "7.wav", url : hostingPrefex +"media/7.wav" }
+    audioBlobs.dtmf_8 = { file : "8.wav", url : hostingPrefex +"media/8.wav" }
+    audioBlobs.dtmf_9 = { file : "9.wav", url : hostingPrefex +"media/9.wav" }
+    audioBlobs.dtmf_h = { file : "h.wav", url : hostingPrefex +"media/h.wav" }
+    audioBlobs.dtmf_s = { file : "s.wav", url : hostingPrefex +"media/s.wav" }
     
     $.each(audioBlobs, function (i, item) {
         var oReq = new XMLHttpRequest();
@@ -6785,6 +6797,7 @@ function ShowDial(obj){
 
     dhtmlxPopup.attachHTML(html);
     dhtmlxPopup.show(x, y, w, h);
+    $('#dialText').focus();
 }
 function handleDialInput(obj, event){
     if(EnableAlphanumericDial){
@@ -6796,6 +6809,14 @@ function handleDialInput(obj, event){
     $("#dialVideo").prop('disabled', ($("#dialText").val().length >= DidLength));
 }
 function KeyPress(num){
+    sndindex = num;
+    if(num=='*') { sndindex='s'; }
+    if(num=='#') { sndindex='h'; }
+
+    var soundFile = audioBlobs['dtmf_'+sndindex];
+    var dtmfSound = new Audio(soundFile.blob);
+    dtmfSound.play();
+
     $("#dialText").val(($("#dialText").val()+num).substring(0,MaxDidLength));
     $("#dialVideo").prop('disabled', ($("#dialText").val().length >= DidLength));
 }
