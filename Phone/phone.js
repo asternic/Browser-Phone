@@ -88,7 +88,7 @@ var availableLang = ["ja", "zh-hans", "zh", "ru", "tr", "nl"];
 // User Settings & Defaults
 // ========================
 var wssServer = getDbItem("wssServer", null);           // eg: raspberrypi.local
-var profileUserID = getDbItem("profileUserID", null);   // Internal reference ID. (DON'T CHANGE THIS!)
+var profileUserID;
 var profileUser = getDbItem("profileUser", null);       // eg: 100
 var profileName = getDbItem("profileName", null);       // eg: Keyla James
 var WebSocketPort = getDbItem("WebSocketPort", '8089');   // eg: 444 | 4443
@@ -1660,8 +1660,7 @@ function InitUi(){
           if(localDB.getItem("InitialConfiguration") != "yes"){
               ConfigureExtensionWindow();
           }
-          
-          // PopulateBuddyList();
+
           PopulateBuddiesIssabel(data.buddies);
 
           // Select Last user
@@ -7389,6 +7388,7 @@ function PopulateBuddiesIssabel(buddies){
 
     // check last activity from localstorage
     var json = JSON.parse(localDB.getItem(profileUserID + "-Buddies"));
+    if(json == null) json = InitUserBuddies();
     var lastAct = [];
 
     if(json !== null) {
@@ -7405,52 +7405,75 @@ function PopulateBuddiesIssabel(buddies){
         });
     }
 
+    json.DataCollection=[];
+
     $.each(buddies, function (i, item) {
 
         var dateNow = utcDateNow();
-        var id = uID();
+
+        var jsonitem = {
+            Type: item.Type,
+            LastActivity: dateNow,
+            ExtNo: "",
+            MobileNumber: "",
+            ContactNumber1: "",
+            ContactNumber2: "",
+            uID: null,
+            cID: null,
+            gID: null,
+            DisplayName: "",
+            Position: "",
+            Description: "",
+            Email: "",
+            MemberCount: 0
+        };
 
         if(item.Type == "extension"){
             // extension
-
-            useId= item.uID;
-            if(typeof(lastAct[useId])=='undefined') {
+            if(typeof(lastAct[item.uID])=='undefined') {
                 lastActivity = dateNow;
             } else {
-                lastActivity = lastAct[useID];
+                lastActivity = lastAct[item.uID];
             }
 
-            var buddy = new Buddy("extension", id, item.DisplayName, item.ExtensionNumber, item.MobileNumber, item.ContactNumber1, item.ContactNumber2, lastActivity, item.Description, item.Email);
+            var buddy = new Buddy("extension", item.uID, item.DisplayName, item.ExtensionNumber, item.MobileNumber, item.ContactNumber1, item.ContactNumber2, lastActivity, item.Description, item.Email);
             AddBuddy(buddy, false, false);
+            jsonitem.ExtNo = item.ExtensionNumber;
+            jsonitem.uID = item.uID;
+            json.DataCollection.push(jsonitem);
         }
         else if(item.Type == "contact"){
             // contact
-            
-            useId= item.cID;
-            if(typeof(lastAct[useId])=='undefined') {
+            if(typeof(lastAct[item.cID])=='undefined') {
                 lastActivity = dateNow;
             } else {
-                lastActivity = lastAct[useID];
+                lastActivity = lastAct[item.cID];
             }
 
-
-            var buddy = new Buddy("contact", id, item.DisplayName, "", item.MobileNumber, item.ContactNumber1, item.ContactNumber2, lastActivity, item.Description, item.Email);
+            var buddy = new Buddy("contact", item.cID, item.DisplayName, "", item.MobileNumber, item.ContactNumber1, item.ContactNumber2, lastActivity, item.Description, item.Email);
             AddBuddy(buddy, false, false);
+            jsonitem.cID = item.cID;
+            jsonitem.ContactNumber1 = item.ContactNumber1;
+            jsonitem.ContactNumber2 = item.ContactNumber2;
+            jsonitem.MobileNumber = item.MobileNumber;
+            json.DataCollection.push(jsonitem);
         }
         else if(item.Type == "group"){
             // group
-            useId= item.gID;
-            if(typeof(lastAct[useId])=='undefined') {
+            if(typeof(lastAct[item.gID])=='undefined') {
                 lastActivity = dateNow;
             } else {
-                lastActivity = lastAct[useID];
+                lastActivity = lastAct[item.gID];
             }
-            var buddy = new Buddy("group", id, item.DisplayName, item.ExtensionNumber, "", "", "", lastActivity, item.MemberCount + " member(s)", item.Email);
+            var buddy = new Buddy("group", item.gID, item.DisplayName, item.ExtensionNumber, "", "", "", lastActivity, item.MemberCount + " member(s)", item.Email);
             AddBuddy(buddy, false, false);
+            jsonitem.gID = item.gID;
+            json.DataCollection.push(jsonitem);
         }
     });
 
-    // Update List (after add)
+    json.TotalRows = json.DataCollection.length;
+    localDB.setItem(profileUserID + "-Buddies", JSON.stringify(json));
     console.log("Updating Buddy List...");
     UpdateBuddyList();
 }
