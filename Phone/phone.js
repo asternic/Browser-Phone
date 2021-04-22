@@ -9823,6 +9823,11 @@ function getPicture(buddy, typestr){
         // Use Cache
         return buddyObj.imageObjectURL;
     }
+
+    if(typestr=='extension') {
+        return '/index.php?menu=address_book&type=internal&action=getImage&idPhoto='+buddy.substr(8)+'&thumbnail=yes&rawmode=yes';
+    }
+
     var dbImg = localDB.getItem("img-"+ buddy +"-"+ typestr);
     if(dbImg == null){
         return hostingPrefex + "default.png";
