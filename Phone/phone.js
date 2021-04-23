@@ -6781,7 +6781,7 @@ function ShowDial(obj){
 
     HidePopup();
     dhtmlxPopup = new dhtmlXPopup();
-    var html = "<div><input id=dialText class=dialTextInput oninput=\"handleDialInput(this, event)\" ></div>";
+    var html = "<div><input id=dialText class=dialTextInput onkeydown=\"handleDialInput(this, event)\" ></div>";
     html += "<table cellspacing=10 cellpadding=0 style=\"margin-left:auto; margin-right: auto\">";
     html += "<tr><td><button class=dtmfButtons style='color:#fff;' onclick=\"KeyPress('1')\"><div>1</div><span>&nbsp;</span></button></td>"
     html += "<td><button class=dtmfButtons style='background-color: #54BEC9;' onclick=\"KeyPress('2')\"><div>2</div><span>ABC</span></button></td>"
@@ -6809,10 +6809,20 @@ function ShowDial(obj){
     $('#dialText').focus();
 }
 function handleDialInput(obj, event){
+
+    if(event.key=='Enter') {
+        DialByLine('audio');
+    }
+
     if(EnableAlphanumericDial){
         $("#dialText").val($("#dialText").val().replace(/[^\da-zA-Z\*\#\+]/g, "").substring(0,MaxDidLength));
     }
     else {
+
+        if(event.key.replace(/[^\d\*\#\+]/g, "")=="" && event.key!='Backspace') {
+           event.preventDefault(); 
+        }
+
         $("#dialText").val($("#dialText").val().replace(/[^\d\*\#\+]/g, "").substring(0,MaxDidLength));
     }
     $("#dialVideo").prop('disabled', ($("#dialText").val().length >= DidLength));
@@ -6826,6 +6836,7 @@ function KeyPress(num){
     var dtmfSound = new Audio(soundFile.blob);
     dtmfSound.play();
 
+console.log('key press');
     $("#dialText").val(($("#dialText").val()+num).substring(0,MaxDidLength));
     $("#dialVideo").prop('disabled', ($("#dialText").val().length >= DidLength));
 }
