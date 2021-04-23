@@ -83,7 +83,7 @@ welcomeScreen += "</div>";
 // Use the "en.json" as a template.
 // More specific lanagauge must be first. ie: "zh-hans" should be before "zh".
 // "en.json" is always loaded by default
-var availableLang = ["ja", "zh-hans", "zh", "ru", "tr", "nl"];
+var availableLang = ["ja", "zh-hans", "zh", "ru", "tr", "nl", "es"];
 
 // User Settings & Defaults
 // ========================
@@ -136,7 +136,11 @@ var DidLength = parseInt(getDbItem("DidLength", 6));                 // DID leng
 var MaxDidLength = parseInt(getDbItem("maximumNumberLength", 16));   // Maximum langth of any DID number including international dialled numbers.
 var DisplayDateFormat = getDbItem("DateFormat", "YYYY-MM-DD");  // The display format for all dates. https://momentjs.com/docs/#/displaying/
 var DisplayTimeFormat = getDbItem("TimeFormat", "h:mm:ss A");    // The display format for all times. https://momentjs.com/docs/#/displaying/
-var Language = getDbItem("Language", "auto");    // Overrides the langauage selector or "automatic". Must be one of availableLang[]. If not defaults to en. Testing: zh-Hans-CN, zh-cmn-Hans-CN, zh-Hant, de, de-DE, en-US, fr, fr-FR, es-ES, sl-IT-nedis, hy-Latn-IT-arevela
+
+cookieLang = Cookies.get("lang").split("_")[0];
+var Language = cookieLang;
+
+//var Language = getDbItem("Language", "auto");    // Overrides the langauage selector or "automatic". Must be one of availableLang[]. If not defaults to en. Testing: zh-Hans-CN, zh-cmn-Hans-CN, zh-Hant, de, de-DE, en-US, fr, fr-FR, es-ES, sl-IT-nedis, hy-Latn-IT-arevela
 
 // Permission Settings
 var EnableTextMessaging = (getDbItem("EnableTextMessaging", "1") == "1");               // Enables the Text Messaging
@@ -2537,19 +2541,19 @@ function wireupAudioSession(lineObj) {
     session.on('failed', function (response, cause) {
         $(MessageObjId).html(lang.call_failed + ": " + cause);
         console.log("Call failed: " + cause);
-        teardownSession(lineObj, 0, "Call failed");
+        teardownSession(lineObj, 0, lang.call_failed);
     });
     session.on('cancel', function () {
         $(MessageObjId).html(lang.call_cancelled);
         console.log("Call Cancelled");
-        teardownSession(lineObj, 0, "Cancelled by caller");
+        teardownSession(lineObj, 0, lang.cancelled_by_caller);
     });
     // referRequested
     // replaced
     session.on('bye', function () {
         $(MessageObjId).html(lang.call_ended);
         console.log("Call ended, bye!");
-        teardownSession(lineObj, 16, "Normal Call clearing");
+        teardownSession(lineObj, 16, lang.normal_call_clearing);
     });
     session.on('terminated', function (message, cause) {
         console.log("Session terminated");
@@ -2751,19 +2755,19 @@ function wireupVideoSession(lineObj) {
     session.on('failed', function (response, cause) {
         $(MessageObjId).html(lang.call_failed +": "+ cause);
         console.log("Call failed: "+ cause);
-        teardownSession(lineObj, 0, "call failed");
+        teardownSession(lineObj, 0, lang.call_failed);
     });
     session.on('cancel', function () {
         $(MessageObjId).html(lang.call_cancelled);
         console.log("Call Cancelled");
-        teardownSession(lineObj, 0, "Cancelled by caller");
+        teardownSession(lineObj, 0, lang.cancelled_by_caller);
     });
     // referRequested
     // replaced
     session.on('bye', function () {
         $(MessageObjId).html(lang.call_ended);
         console.log("Call ended, bye!");
-        teardownSession(lineObj, 16, "Normal Call clearing");
+        teardownSession(lineObj, 16, lang.normal_call_clearing);
     });
     session.on('terminated', function (message, cause) {
         console.log("Session terminated");
