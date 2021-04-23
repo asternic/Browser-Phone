@@ -1920,9 +1920,12 @@ function ReceiveCall(session) {
     var buddyObj = FindBuddyByDid(did);
     // Make new contact of its not there
     if(buddyObj == null) {
+
+        
         var buddyType = (did.length > DidLength)? "contact" : "extension";
         var focusOnBuddy = (CurrentCalls==0);
-        buddyObj = MakeBuddy(buddyType, true, focusOnBuddy, true, callerID, did);
+        buddyObj = MakeBuddy(buddyType, true, focusOnBuddy, true, callerID, did, false);
+        
     } else {
         // Double check that the buddy has the same caller ID as the incoming call
         // With Buddies that are contacts, eg +441234567890 <+441234567890> leave as as
@@ -6836,7 +6839,6 @@ function KeyPress(num){
     var dtmfSound = new Audio(soundFile.blob);
     dtmfSound.play();
 
-console.log('key press');
     $("#dialText").val(($("#dialText").val()+num).substring(0,MaxDidLength));
     $("#dialVideo").prop('disabled', ($("#dialText").val().length >= DidLength));
 }
@@ -6858,6 +6860,8 @@ function DialByLine(type, buddy, numToDial, CallerID){
         return;
     }
 
+    addHistory(profileUser, numDial);
+
     // Create a Buddy if one is not already existing
     var buddyObj = (buddy)? FindBuddyByIdentity(buddy) : FindBuddyByDid(numDial);
     if(buddyObj == null) {
@@ -6865,8 +6869,10 @@ function DialByLine(type, buddy, numToDial, CallerID){
         // Assumption but anyway: If the number starts with a * or # then its probably not a subscribable did,  
         // and is probably a feature code.
         if(buddyType.substring(0,1) == "*" || buddyType.substring(0,1) == "#") buddyType = "contact";
-        buddyObj = MakeBuddy(buddyType, true, false, true, (CallerID)? CallerID : numDial, numDial);
+        buddyObj = MakeBuddy(buddyType, true, true, true, (CallerID)? CallerID : numDial, numDial, false);
     }
+    SelectBuddy(buddyObj.identity);
+    
 
     // Create a Line
     var newLineNumber = Lines.length + 1;
@@ -7340,7 +7346,12 @@ function InitUserBuddies(){
     localDB.setItem(profileUserID + "-Buddies", JSON.stringify(template));
     return JSON.parse(localDB.getItem(profileUserID + "-Buddies"));
 }
-function MakeBuddy(type, update, focus, subscribe, callerID, did){
+function MakeBuddy(type, update, focus, subscribe, callerID, did, addtolist){
+
+    if(typeof(addtolist)=='undefined') {
+        addtolist=true;
+    }
+
     var json = JSON.parse(localDB.getItem(profileUserID + "-Buddies"));
     if(json == null) json = InitUserBuddies();
 
@@ -7365,9 +7376,15 @@ function MakeBuddy(type, update, focus, subscribe, callerID, did){
             MemberCount: 0
         });
         buddyObj = new Buddy("contact", id, callerID, "", "", did, "", dateNow, "", "");
-        AddBuddy(buddyObj, update, focus);
+        if(addtolist==true) {
+            AddBuddy(buddyObj, update, focus);
+        }
+        if(focus==true) {
+            SelectBuddy(buddyObj.identity);
+        }
     }
     else {
+console.log('nico');
         var id = uID();
         var dateNow = utcDateNow();
         json.DataCollection.push({
@@ -7387,7 +7404,12 @@ function MakeBuddy(type, update, focus, subscribe, callerID, did){
             MemberCount: 0
         });
         buddyObj = new Buddy("extension", id, callerID, did, "", "", "", dateNow, "", "");
-        AddBuddy(buddyObj, update, focus, subscribe);
+        if(addtolist==true) {
+            AddBuddy(buddyObj, update, focus, subscribe);
+        }
+        if(focus==true) {
+            SelectBuddy(buddyObj.identity);
+        }
     }
     // Update Size: 
     json.TotalRows = json.DataCollection.length;
@@ -10649,7 +10671,9 @@ function HidePopup(timeout){
         }
     }
 }
-
+function addHistory(clid,did) {
+   console.log("add history "+clid+", "+did);
+}
 // Device Detection
 // ================
 function DetectDevices(){
