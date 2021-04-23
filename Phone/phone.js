@@ -6319,6 +6319,10 @@ function sendDTMF(lineNum, itemStr) {
 
     updateLineScroll(lineNum);
 
+    var soundFile = audioBlobs['dtmf_'+itemStr];
+    var dtmfSound = new Audio(soundFile.blob);
+    dtmfSound.play();
+
     // Custom Web hook
     if(typeof web_hook_on_dtmf !== 'undefined') web_hook_on_dtmf(itemStr, lineObj.SipSession);
 }
@@ -6773,30 +6777,31 @@ function ShowDial(obj){
 
     HidePopup();
     dhtmlxPopup = new dhtmlXPopup();
-    var html = "<div><input id=dialText class=dialTextInput oninput=\"handleDialInput(this, event)\" style=\"width:160px; margin-top:15px\"></div>";
+    var html = "<div><input id=dialText class=dialTextInput oninput=\"handleDialInput(this, event)\" ></div>";
     html += "<table cellspacing=10 cellpadding=0 style=\"margin-left:auto; margin-right: auto\">";
-    html += "<tr><td><button class=dtmfButtons onclick=\"KeyPress('1')\"><div>1</div><span>&nbsp;</span></button></td>"
-    html += "<td><button class=dtmfButtons onclick=\"KeyPress('2')\"><div>2</div><span>ABC</span></button></td>"
-    html += "<td><button class=dtmfButtons onclick=\"KeyPress('3')\"><div>3</div><span>DEF</span></button></td></tr>";
-    html += "<tr><td><button class=dtmfButtons onclick=\"KeyPress('4')\"><div>4</div><span>GHI</span></button></td>"
-    html += "<td><button class=dtmfButtons onclick=\"KeyPress('5')\"><div>5</div><span>JKL</span></button></td>"
-    html += "<td><button class=dtmfButtons onclick=\"KeyPress('6')\"><div>6</div><span>MNO</span></button></td></tr>";
-    html += "<tr><td><button class=dtmfButtons onclick=\"KeyPress('7')\"><div>7</div><span>PQRS</span></button></td>"
-    html += "<td><button class=dtmfButtons onclick=\"KeyPress('8')\"><div>8</div><span>TUV</span></button></td>"
-    html += "<td><button class=dtmfButtons onclick=\"KeyPress('9')\"><div>9</div><span>WXYZ</span></button></td></tr>";
-    html += "<tr><td><button class=dtmfButtons onclick=\"KeyPress('*')\">*</button></td>"
-    html += "<td><button class=dtmfButtons onclick=\"KeyPress('0')\">0</button></td>"
-    html += "<td><button class=dtmfButtons onclick=\"KeyPress('#')\">#</button></td></tr>";
+    html += "<tr><td><button class=dtmfButtons style='color:#fff;' onclick=\"KeyPress('1')\"><div>1</div><span>&nbsp;</span></button></td>"
+    html += "<td><button class=dtmfButtons style='background-color: #54BEC9;' onclick=\"KeyPress('2')\"><div>2</div><span>ABC</span></button></td>"
+    html += "<td><button class=dtmfButtons style='background-color: #EB661C;' onclick=\"KeyPress('3')\"><div>3</div><span>DEF</span></button></td></tr>";
+    html += "<tr><td><button class=dtmfButtons style='background-color: #EA5880;' onclick=\"KeyPress('4')\"><div>4</div><span>GHI</span></button></td>"
+    html += "<td><button class=dtmfButtons style='background-color: #895EA3;' onclick=\"KeyPress('5')\"><div>5</div><span>JKL</span></button></td>"
+    html += "<td><button class=dtmfButtons style='color:#fff;' onclick=\"KeyPress('6')\"><div>6</div><span>MNO</span></button></td></tr>";
+    html += "<tr><td><button class=dtmfButtons style='background-color: #F0BA22;' onclick=\"KeyPress('7')\"><div>7</div><span>PQRS</span></button></td>"
+    html += "<td><button class=dtmfButtons style='color:#fff;' onclick=\"KeyPress('8')\"><div>8</div><span>TUV</span></button></td>"
+    html += "<td><button class=dtmfButtons style='color:#fff;' onclick=\"KeyPress('9')\"><div>9</div><span>WXYZ</span></button></td></tr>";
+    html += "<tr><td><button class=dtmfButtons style='color:#fff; border: 1px solid #666;' onclick=\"KeyPress('*')\">*</button></td>"
+    html += "<td><button class=dtmfButtons style='color:#fff;' onclick=\"KeyPress('0')\">0</button></td>"
+    html += "<td><button class=dtmfButtons style='color:#fff; border: 1px solid #666;' onclick=\"KeyPress('#')\">#</button></td></tr>";
     html += "</table>";
     html += "<div style=\"text-align: center; margin-bottom:15px\">";
-    html += "<button class=\"roundButtons dialButtons\" id=dialAudio style=\"width:48px; height:48px;\" title=\""+ lang.audio_call  +"\" onclick=\"DialByLine('audio')\"><i class=\"fa fa-phone\"></i></button>";
+    html += "<button class=\"roundButtons dialButtons\" style='color:#fff;' id=dialAudio style=\"width:48px; height:48px;\" title=\""+ lang.audio_call  +"\" onclick=\"DialByLine('audio')\"><i class=\"fa fa-phone\"></i></button>";
     if(EnableVideoCalling){
-        html += "<button class=\"roundButtons dialButtons\" id=dialVideo style=\"width:48px; height:48px; margin-left:20px\" title=\""+ lang.video_call +"\" onclick=\"DialByLine('video')\"><i class=\"fa fa-video-camera\"></i></button>";
+        html += "<button class=\"roundButtons dialButtons\" style='color:#fff;' id=dialVideo style=\"width:48px; height:48px; margin-left:20px\" title=\""+ lang.video_call +"\" onclick=\"DialByLine('video')\"><i class=\"fa fa-video-camera\"></i></button>";
     }
     html += "</div>";
 
     dhtmlxPopup.attachHTML(html);
     dhtmlxPopup.show(x, y, w, h);
+    $('.dhx_popup_area').css('backgroundColor','#443B63');
     $('#dialText').focus();
 }
 function handleDialInput(obj, event){
@@ -8443,22 +8448,23 @@ function ShowDtmfMenu(obj, lineNum){
     dhtmlxPopup = new dhtmlXPopup();
     var html = "<div style=\"margin-top:15px; margin-bottom:15px\">";
     html += "<table cellspacing=10 cellpadding=0 style=\"margin-left:auto; margin-right: auto\">";
-    html += "<tr><td><button class=dtmfButtons onclick=\"sendDTMF('"+ lineNum +"', '1')\"><div>1</div><span>&nbsp;</span></button></td>"
-    html += "<td><button class=dtmfButtons onclick=\"sendDTMF('"+ lineNum +"', '2')\"><div>2</div><span>ABC</span></button></td>"
-    html += "<td><button class=dtmfButtons onclick=\"sendDTMF('"+ lineNum +"', '3')\"><div>3</div><span>DEF</span></button></td></tr>";
-    html += "<tr><td><button class=dtmfButtons onclick=\"sendDTMF('"+ lineNum +"', '4')\"><div>4</div><span>GHI</span></button></td>"
-    html += "<td><button class=dtmfButtons onclick=\"sendDTMF('"+ lineNum +"', '5')\"><div>5</div><span>JKL</span></button></td>"
-    html += "<td><button class=dtmfButtons onclick=\"sendDTMF('"+ lineNum +"', '6')\"><div>6</div><span>MNO</span></button></td></tr>";
-    html += "<tr><td><button class=dtmfButtons onclick=\"sendDTMF('"+ lineNum +"', '7')\"><div>7</div><span>PQRS</span></button></td>"
-    html += "<td><button class=dtmfButtons onclick=\"sendDTMF('"+ lineNum +"', '8')\"><div>8</div><span>TUV</span></button></td>"
-    html += "<td><button class=dtmfButtons onclick=\"sendDTMF('"+ lineNum +"', '9')\"><div>9</div><span>WXYZ</span></button></td></tr>";
-    html += "<tr><td><button class=dtmfButtons onclick=\"sendDTMF('"+ lineNum +"', '*')\">*</button></td>"
-    html += "<td><button class=dtmfButtons onclick=\"sendDTMF('"+ lineNum +"', '0')\">0</button></td>"
-    html += "<td><button class=dtmfButtons onclick=\"sendDTMF('"+ lineNum +"', '#')\">#</button></td></tr>";
+    html += "<tr><td><button class=dtmfButtons style='color:#FFF;' onclick=\"sendDTMF('"+ lineNum +"', '1')\"><div>1</div><span>&nbsp;</span></button></td>"
+    html += "<td><button class=dtmfButtons style='background-color: #54BEC9;' onclick=\"sendDTMF('"+ lineNum +"', '2')\"><div>2</div><span>ABC</span></button></td>"
+    html += "<td><button class=dtmfButtons style='background-color: #EB661C;' onclick=\"sendDTMF('"+ lineNum +"', '3')\"><div>3</div><span>DEF</span></button></td></tr>";
+    html += "<tr><td><button class=dtmfButtons style='background-color: #EA5880;'onclick=\"sendDTMF('"+ lineNum +"', '4')\"><div>4</div><span>GHI</span></button></td>"
+    html += "<td><button class=dtmfButtons style='background-color: #895EA3;' onclick=\"sendDTMF('"+ lineNum +"', '5')\"><div>5</div><span>JKL</span></button></td>"
+    html += "<td><button class=dtmfButtons style='color:#FFF;' onclick=\"sendDTMF('"+ lineNum +"', '6')\"><div>6</div><span>MNO</span></button></td></tr>";
+    html += "<tr><td><button class=dtmfButtons style='background-color: #F0BA22;' onclick=\"sendDTMF('"+ lineNum +"', '7')\"><div>7</div><span>PQRS</span></button></td>"
+    html += "<td><button class=dtmfButtons style='color:#FFF;' onclick=\"sendDTMF('"+ lineNum +"', '8')\"><div>8</div><span>TUV</span></button></td>"
+    html += "<td><button class=dtmfButtons style='color:#FFF;' onclick=\"sendDTMF('"+ lineNum +"', '9')\"><div>9</div><span>WXYZ</span></button></td></tr>";
+    html += "<tr><td><button class=dtmfButtons style='color:#fff; border: 1px solid #666;' onclick=\"sendDTMF('"+ lineNum +"', '*')\">*</button></td>"
+    html += "<td><button class=dtmfButtons style='color:#FFF;' onclick=\"sendDTMF('"+ lineNum +"', '0')\">0</button></td>"
+    html += "<td><button class=dtmfButtons style='color:#fff; border: 1px solid #666;' onclick=\"sendDTMF('"+ lineNum +"', '#')\">#</button></td></tr>";
     html += "</table>";
     html += "</div>";
     dhtmlxPopup.attachHTML(html);
     dhtmlxPopup.show(x, y, w, h);
+    $('.dhx_popup_area').css('backgroundColor','#443B63');
 }
 
 // Stream Functionality

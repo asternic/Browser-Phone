@@ -183,10 +183,11 @@
 .dtmfButtons{
     font-size: 20px;
     color: #222222;
-    width: 40px;
-    height: 40px;
-
+    width: 43px;
+    height: 43px;
     border: 1px solid #efefef;
+    color: #000;
+    border-radius:100px;
 }
 .dtmfButtons:hover{
     color: #FFFFFF;
@@ -2025,10 +2026,11 @@ div.dhx_popup_material div.dhx_popup_area {
 .dialTextInput{
     font-size: 16px;
     text-align: center;
-    border-radius: 10px;
+    border-radius: 1px;
     border: none;
-    background-color: transparent;
+    background-color: #DDD;
     outline-color: #cbe4ff;
+    width:100%;
 }
 .dialButtons{
     font-size: 24px; 
