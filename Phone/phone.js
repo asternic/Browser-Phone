@@ -1567,7 +1567,7 @@ function InitUi(){
     leftHTML += "<div class=contact id=UserProfile style=\"margin-bottom:5px;\">";
     leftHTML += "<div id=UserProfilePic class=buddyIcon></div>";
     leftHTML += "<span id=reglink class=dotOffline></span>";
-    leftHTML += "<span id=dereglink class=dotOnline style=\"display:none\"><i class=\"fa fa-wifi\" style=\"line-height: 14px; text-align: center; display: block;\"></i></span>";
+    leftHTML += "<span id=dereglink class=dotOnline style=\"display:none\"><i id='deregicon' class=\"fa fa-wifi\" style=\"line-height: 14px; text-align: center; display: block;\"></i></span>";
     leftHTML += "<span id=WebRtcFailed class=dotFailed style=\"display:none\"><i class=\"fa fa-cross\" style=\"line-height: 14px; text-align: center; display: block;\"></i></span>";
     leftHTML += "<div class=contactNameText style=\"margin-right: 0px;\"><i class=\"fa fa-phone-square\"></i> <span id=UserDID></span> - <span id=UserCallID></span></div>";
     leftHTML += "<div id=regStatus class=presenceText>&nbsp;</div>";
@@ -1666,6 +1666,16 @@ function InitUi(){
 
           if(localDB.getItem("InitialConfiguration") != "yes"){
               ConfigureExtensionWindow();
+          }
+
+          if(data.dnd=='on') {
+              $('#deregicon').removeClass('fa-wifi');
+              $('#deregicon').addClass('fa-ban');
+              $('#dereglink').css('backgroundColor','#f00');
+          } else {
+              $('#deregicon').removeClass('fa-ban');
+              $('#deregicon').addClass('fa-wifi');
+              $('#dereglink').css('backgroundColor','#3fbd3f');
           }
 
           PopulateBuddiesIssabel(data.buddies);
@@ -9270,6 +9280,25 @@ function ToggleDoNoDisturb(){
     if(DoNotDisturbPolicy == "enabled") DoNotDisturbEnabled = true;
     localDB.setItem("DoNotDisturbEnabled", (DoNotDisturbEnabled == true)? "1" : "0");
     console.log("DoNotDisturb", DoNotDisturbEnabled);
+
+    if(DoNotDisturbEnabled) {
+        $('#deregicon').removeClass('fa-wifi');
+        $('#deregicon').addClass('fa-ban');
+        $('#dereglink').css('backgroundColor','#f00');
+        value="on";
+    } else {
+        $('#deregicon').removeClass('fa-ban');
+        $('#deregicon').addClass('fa-wifi');
+        $('#dereglink').css('backgroundColor','#3fbd3f');
+        value="off";
+    }
+
+    $.ajax({
+      type:"POST", 
+      url: 'getconf.php',
+      data: { action: 'do_not_disturb', value: value }
+    });
+     
 }
 function ToggleCallWaiting(){
     if(CallWaitingPolicy == "disabled"){

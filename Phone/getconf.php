@@ -27,6 +27,7 @@ require_once "../../libs/misc.lib.php";
 include_once "../../modules/address_book/libs/paloSantoAdressBook.class.php";
 include_once "../../libs/paloSantoDB.class.php";
 include_once "../../libs/paloSantoACL.class.php";
+include_once "../../modules/myex_config/libs/paloSantoMyExtension.class.php";
 
 session_name("issabelSession");
 session_start();
@@ -56,6 +57,23 @@ if($extension=='') {
     }
     die();
 }
+
+if(isset($_POST['action'])) {
+   if($_POST['action']=="do_not_disturb") {
+       $enableDND = $_POST['value'];
+       $pMyExtension = new paloSantoMyExtension();
+       $pMyExtension->AMI_OpenConnect();
+       $statusDND  = $pMyExtension->setConfig_DoNotDisturb($enableDND,$extension);
+       $pMyExtension->AMI_CloseConnect();
+       die();
+   }
+}
+
+$pMyExtension = new paloSantoMyExtension();
+$pMyExtension->AMI_OpenConnect();
+$statusDND       = $pMyExtension->getConfig_DoNotDisturb($extension);
+$pMyExtension->AMI_CloseConnect();
+
 $pDB   = new paloDB("sqlite3:////var/www/db/address_book.db");
 $padress_book = new paloAdressBook($pDB);
 $external = $padress_book->getAddressBook(NULL,NULL,NULL,NULL,FALSE,$id_user);
@@ -85,6 +103,6 @@ $row = $pDB->getFirstRowQuery($query, false, array());
 $secret = $row[0];
 
 
-echo '{"success":true, "extension": "'.$extension.'","name":"'.$nombre.'", "secret":"'.$secret.'", "buddies":'.$buddies.'}';
+echo '{"success":true, "extension": "'.$extension.'","name":"'.$nombre.'", "secret":"'.$secret.'", "dnd": "'.$statusDND.'" ,"buddies":'.$buddies.'}';
 unset($_SESSION);
 session_commit();
