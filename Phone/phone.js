@@ -7503,10 +7503,11 @@ function PopulateBuddiesIssabel(buddies){
                 lastActivity = lastAct[item.uID];
             }
 
-            var buddy = new Buddy("extension", item.uID, item.DisplayName, item.ExtensionNumber, item.MobileNumber, item.ContactNumber1, item.ContactNumber2, lastActivity, item.Description, item.Email);
+            var buddy = new Buddy("extension", item.ExtensionNumber, item.DisplayName, item.ExtensionNumber, item.MobileNumber, item.ContactNumber1, item.ContactNumber2, lastActivity, item.Description, item.Email);
             AddBuddy(buddy, false, false);
             jsonitem.ExtNo = item.ExtensionNumber;
-            jsonitem.uID = item.uID;
+            jsonitem.uID = item.ExtensionNumber;
+            jsonitem.identity = item.ExtensionNumber;
             json.DataCollection.push(jsonitem);
         }
         else if(item.Type == "contact"){
