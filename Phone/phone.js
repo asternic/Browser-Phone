@@ -538,6 +538,7 @@ function ConfigureExtensionWindow(){
                localDB.setItem("RingOutputId", $("#ringDevice").val());
 
                // 3 Appearance
+               /*
                $("#ImageCanvas").croppie('result', { 
                    type: 'base64', 
                    size: 'viewport', 
@@ -547,6 +548,7 @@ function ConfigureExtensionWindow(){
                }).then(function(base64) {
                    localDB.setItem("profilePicture", base64);
                });
+               */
 
                // 4 Notifications
                localDB.setItem("Notifications", ($("#Settings_Notifications").is(":checked"))? "1" : "0");
@@ -1664,6 +1666,7 @@ function InitUi(){
 
           $("#UserDID").html(profileUser);
           $("#UserCallID").html(profileName);
+          $("#UserProfilePic").css("background-image", "url('"+ getPicture("profilePicture") +"')");
 
           if(localDB.getItem("InitialConfiguration") != "yes"){
               ConfigureExtensionWindow();
