@@ -137,8 +137,12 @@ var MaxDidLength = parseInt(getDbItem("maximumNumberLength", 16));   // Maximum 
 var DisplayDateFormat = getDbItem("DateFormat", "YYYY-MM-DD");  // The display format for all dates. https://momentjs.com/docs/#/displaying/
 var DisplayTimeFormat = getDbItem("TimeFormat", "h:mm:ss A");    // The display format for all times. https://momentjs.com/docs/#/displaying/
 
-cookieLang = Cookies.get("lang").split("_")[0];
-var Language = cookieLang;
+var Language = 'auto';
+
+cookieLang = Cookies.get("lang");
+if(cookieLang!=null) {
+    Language = cookieLang.split("_")[0];
+}
 
 //var Language = getDbItem("Language", "auto");    // Overrides the langauage selector or "automatic". Must be one of availableLang[]. If not defaults to en. Testing: zh-Hans-CN, zh-cmn-Hans-CN, zh-Hant, de, de-DE, en-US, fr, fr-FR, es-ES, sl-IT-nedis, hy-Latn-IT-arevela
 
