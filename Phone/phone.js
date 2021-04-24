@@ -9848,6 +9848,11 @@ function ReformatMessage(str) {
     return msg;
 }
 function getPicture(buddy, typestr){
+
+    if(buddy == null) {
+        return hostingPrefex + "default.png";
+    }
+
     if(buddy == "profilePicture"){
         // Special handling for profile image
         var dbImg = localDB.getItem("profilePicture");
