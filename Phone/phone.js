@@ -9878,7 +9878,8 @@ function getPicture(buddy, typestr){
     }
 
     if(typestr=='extension') {
-        return '/index.php?menu=address_book&type=internal&action=getImage&idPhoto='+buddy.substr(8)+'&thumbnail=yes&rawmode=yes';
+        extno = (buddy.indexOf("internal")==0)?buddy.susbstr(8):buddy;
+        return '/index.php?menu=address_book&type=internal&action=getImage&idPhoto='+extno+'&thumbnail=yes&rawmode=yes';
     }
 
     var dbImg = localDB.getItem("img-"+ buddy +"-"+ typestr);
