@@ -9862,7 +9862,7 @@ function getPicture(buddy, typestr){
         // Special handling for profile image
         var dbImg = localDB.getItem("profilePicture");
         if(dbImg == null){
-            return hostingPrefex + "default.png";
+            return '/index.php?menu=address_book&type=internal&action=getImage&idPhoto='+profileUser+'&thumbnail=yes&rawmode=yes';
         }
         else {
             return dbImg; 
