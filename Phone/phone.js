@@ -144,12 +144,9 @@ if(cookieLang!=null) {
     Language = cookieLang.split("_")[0];
 }
 
-//var Language = getDbItem("Language", "auto");    // Overrides the langauage selector or "automatic". Must be one of availableLang[]. If not defaults to en. Testing: zh-Hans-CN, zh-cmn-Hans-CN, zh-Hant, de, de-DE, en-US, fr, fr-FR, es-ES, sl-IT-nedis, hy-Latn-IT-arevela
-
 // Permission Settings
 var EnableTextMessaging = (getDbItem("EnableTextMessaging", "1") == "1");               // Enables the Text Messaging
 var DisableFreeDial = (getDbItem("DisableFreeDial", "0") == "1");                       // Removes the Dial icon in the profile area, users will need to add buddies in order to dial.
-//var DisableBuddies = (getDbItem("DisableBuddies", "0") == "1");                         // Removes the Add Someone menu item and icon from the profile area. Buddies will still be created automatically. 
 var DisableBuddies = 1;
 
 var EnableTransfer = (getDbItem("EnableTransfer", "1") == "1");                         // Controls Transfering during a call
@@ -158,10 +155,9 @@ var AutoAnswerPolicy = getDbItem("AutoAnswerPolicy", "allow");                  
 var DoNotDisturbPolicy = getDbItem("DoNotDisturbPolicy", "allow");                      // allow = user can choose | disabled = feature is disabled | enabled = feature is always on
 var CallWaitingPolicy = getDbItem("CallWaitingPolicy", "allow");                        // allow = user can choose | disabled = feature is disabled | enabled = feature is always on
 var CallRecordingPolicy = getDbItem("CallRecordingPolicy", "allow");                    // allow = user can choose | disabled = feature is disabled | enabled = feature is always on
-//var EnableAccountSettings = (getDbItem("EnableAccountSettings", "1") == "1");           // Controls the Account tab in Settings
-var EnableAccountSettings = false;  // nico
+var EnableAccountSettings = false;  
 var EnableAudioVideoSettings = (getDbItem("EnableAudioVideoSettings", "1") == "1");     // Controls the Audio & Video tab in Settings
-var EnableAppearanceSettings = (getDbItem("EnableAppearanceSettings", "1") == "1");     // Controls the Appearance tab in Settings
+var EnableAppearanceSettings = false;
 var EnableNotificationSettings = (getDbItem("EnableNotificationSettings", "1") == "1"); // Controls the Notifications tab in Settings
 var EnableAlphanumericDial = (getDbItem("EnableAlphanumericDial", "0") == "1");         // Allows calling /[^\da-zA-Z\*\#\+]/g default is /[^\d\*\#\+]/g
 var EnableVideoCalling = (getDbItem("EnableVideoCalling", "1") == "1");                 // Enables Video during a call
