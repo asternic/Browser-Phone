@@ -69,7 +69,7 @@ foreach($external as $data) {
 
 $internal = $padress_book->getDeviceFreePBX_Completed($dsnAsterisk, 10000,0,'','');
 foreach($internal as $idx=>$data) {
-
+    if($data['id']==$extension) continue;
     $info = array("ExtensionNumber"=>$data['id'],"DisplayName"=>$data['description'],"Email"=>$data['email'],"Description"=>$data['description'],"Type"=>"extension");
     $final[] = $info;
 }
