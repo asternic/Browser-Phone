@@ -1428,15 +1428,15 @@ function EditBuddyWindow(buddy){
         $("#ImageCanvas").croppie('result', constraints).then(function(base64) {
             if(buddyObj.Type == "extension"){
                 localDB.setItem("img-"+ buddyObj.uID +"-extension", base64);
-                $("#contact-"+ buddyObj.uID +"-picture-main").css("background-image", 'url('+ getPicture(buddyObj.uID, 'extension') +')');
+                $(jq("contact-"+ buddyObj.uID +"-picture-main")).css("background-image", 'url('+ getPicture(buddyObj.uID, 'extension') +')');
             }
             else if(buddyObj.Type == "contact") {
                 localDB.setItem("img-"+ buddyObj.cID +"-contact", base64);
-                $("#contact-"+ buddyObj.cID +"-picture-main").css("background-image", 'url('+ getPicture(buddyObj.cID, 'contact') +')');
+                $(jq("contact-"+ buddyObj.cID +"-picture-main")).css("background-image", 'url('+ getPicture(buddyObj.cID, 'contact') +')');
             }
             else if(buddyObj.Type == "group") {
                 localDB.setItem("img-"+ buddyObj.gID +"-group", base64);
-                $("#contact-"+ buddyObj.gID +"-picture-main").css("background-image", 'url('+ getPicture(buddyObj.gID, 'group') +')');
+                $(jq("contact-"+ buddyObj.gID +"-picture-main")).css("background-image", 'url('+ getPicture(buddyObj.gID, 'group') +')');
             }
             // Update
             UpdateBuddyList();
@@ -1955,11 +1955,11 @@ function ReceiveCall(session) {
     window.clearInterval(session.data.callTimer);
     var startTime = moment.utc();
     session.data.callstart = startTime.format("YYYY-MM-DD HH:mm:ss UTC");
-    $("#contact-" + buddy + "-timer").show();
+    $(jq("contact-" + buddy + "-timer")).show();
     session.data.callTimer = window.setInterval(function(){
         var now = moment.utc();
         var duration = moment.duration(now.diff(startTime)); 
-        $("#contact-" + buddy + "-timer").html(formatShortDuration(duration.asSeconds()));
+        $(jq("contact-" + buddy + "-timer")).html(formatShortDuration(duration.asSeconds()));
     }, 1000);
     session.data.buddyId = buddy;
     session.data.calldirection = "inbound";
@@ -2001,11 +2001,11 @@ function ReceiveCall(session) {
 
         window.clearInterval(session.data.callTimer);
 
-        $("#contact-" + buddy + "-timer").html("");
-        $("#contact-" + buddy + "-timer").hide();
-        $("#contact-" + buddy + "-msg").html("");
-        $("#contact-" + buddy + "-msg").hide();
-        $("#contact-" + buddy + "-AnswerCall").hide();
+        $(jq("contact-" + buddy + "-timer")).html("");
+        $(jq("contact-" + buddy + "-timer")).hide();
+        $(jq("contact-" + buddy + "-msg")).html("");
+        $(jq("contact-" + buddy + "-msg")).hide();
+        $(jq("contact-" + buddy + "-AnswerCall")).hide();
 
         RefreshStream(buddyObj);
         updateScroll(buddyObj.identity);
@@ -2056,15 +2056,15 @@ function ReceiveCall(session) {
     }
     
     // Show the Answer Thingy
-    $("#contact-" + buddyObj.identity + "-msg").html(lang.incomming_call_from +" " + callerID +" &lt;"+ did +"&gt;");
-    $("#contact-" + buddyObj.identity + "-msg").show();
+    $(jq("contact-" + buddyObj.identity + "-msg")).html(lang.incomming_call_from +" " + callerID +" &lt;"+ did +"&gt;");
+    $(jq("contact-" + buddyObj.identity + "-msg")).show();
     if(videoInvite){
-        $("#contact-"+ buddyObj.identity +"-answer-video").show();
+        $(jq("contact-"+ buddyObj.identity +"-answer-video")).show();
     }
     else {
-        $("#contact-"+ buddyObj.identity +"-answer-video").hide();
+        $(jq("contact-"+ buddyObj.identity +"-answer-video")).hide();
     }
-    $("#contact-" + buddyObj.identity + "-AnswerCall").show();
+    $(jq("contact-" + buddyObj.identity + "-AnswerCall")).show();
     updateScroll(buddyObj.identity);
 
     // Play Ring Tone if not on the phone
@@ -2180,16 +2180,16 @@ function AnswerAudioCall(buddy) {
     var buddyObj = FindBuddyByIdentity(buddy);
     if(buddyObj == null) {
         console.warn("Audio Answer failed, null buddy");
-        $("#contact-" + buddy + "-msg").html(lang.call_failed);
-        $("#contact-" + buddy + "-AnswerCall").hide();
+        $(jq("contact-" + buddy + "-msg")).html(lang.call_failed);
+        $(jq("contact-" + buddy + "-AnswerCall")).hide();
         return;
     }
 
     var session = getSession(buddy);
     if (session == null) {
         console.warn("Audio Answer failed, null session");
-        $("#contact-" + buddy + "-msg").html(lang.call_failed);
-        $("#contact-" + buddy + "-AnswerCall").hide();
+        $(jq("contact-" + buddy + "-msg")).html(lang.call_failed);
+        $(jq("contact-" + buddy + "-AnswerCall")).hide();
         return;
     }
     
@@ -2204,15 +2204,15 @@ function AnswerAudioCall(buddy) {
     // Check vitals
     if(HasAudioDevice == false){
         Alert(lang.alert_no_microphone);
-        $("#contact-" + buddy + "-msg").html(lang.call_failed);
-        $("#contact-" + buddy + "-AnswerCall").hide();
+        $(jq("contact-" + buddy + "-msg")).html(lang.call_failed);
+        $(jq("contact-" + buddy + "-AnswerCall")).hide();
         return;
     }
-    $("#contact-" + buddy + "-timer").html("");
-    $("#contact-" + buddy + "-timer").hide();
-    $("#contact-" + buddy + "-msg").html("");
-    $("#contact-" + buddy + "-msg").hide();
-    $("#contact-" + buddy + "-AnswerCall").hide();
+    $(jq("contact-" + buddy + "-timer")).html("");
+    $(jq("contact-" + buddy + "-timer")).hide();
+    $(jq("contact-" + buddy + "-msg")).html("");
+    $(jq("contact-" + buddy + "-msg")).hide();
+    $(jq("contact-" + buddy + "-AnswerCall")).hide();
 
     // Create a new Line and move the session over to the line
     var callerID = session.remoteIdentity.displayName;
@@ -2275,10 +2275,10 @@ function AnswerAudioCall(buddy) {
 
     // Wire up UI
     wireupAudioSession(lineObj);
-    $("#contact-" + buddy + "-msg").html(lang.call_in_progress);
+    $(jq("contact-" + buddy + "-msg")).html(lang.call_in_progress);
 
     // Clear Answer Buttons
-    $("#contact-" + buddy + "-AnswerCall").hide();
+    $(jq("contact-" + buddy + "-AnswerCall")).hide();
 }
 function AnswerVideoCall(buddy) {
     CloseWindow();
@@ -2286,16 +2286,16 @@ function AnswerVideoCall(buddy) {
     var buddyObj = FindBuddyByIdentity(buddy);
     if(buddyObj == null) {
         console.warn("Audio Answer failed, null buddy");
-        $("#contact-" + buddy + "-msg").html(lang.call_failed);
-        $("#contact-" + buddy + "-AnswerCall").hide();
+        $(jq("contact-" + buddy + "-msg")).html(lang.call_failed);
+        $(jq("contact-" + buddy + "-AnswerCall")).hide();
         return;
     }
 
     var session = getSession(buddy);
     if (session == null) {
         console.warn("Video Answer failed, null session");
-        $("#contact-" + buddy + "-msg").html(lang.call_failed);
-        $("#contact-" + buddy + "-AnswerCall").hide();
+        $(jq("contact-" + buddy + "-msg")).html(lang.call_failed);
+        $(jq("contact-" + buddy + "-AnswerCall")).hide();
         return;
     }
 
@@ -2310,8 +2310,8 @@ function AnswerVideoCall(buddy) {
     // Check vitals
     if(HasAudioDevice == false){
         Alert(lang.alert_no_microphone);
-        $("#contact-" + buddy + "-msg").html(lang.call_failed);
-        $("#contact-" + buddy + "-AnswerCall").hide();
+        $(jq("contact-" + buddy + "-msg")).html(lang.call_failed);
+        $(jq("contact-" + buddy + "-AnswerCall")).hide();
         return;
     }
     if(HasVideoDevice == false){
@@ -2319,11 +2319,11 @@ function AnswerVideoCall(buddy) {
         AnswerAudioCall(buddy);
         return;
     }
-    $("#contact-" + buddy + "-timer").html("");
-    $("#contact-" + buddy + "-timer").hide();
-    $("#contact-" + buddy + "-msg").html("");
-    $("#contact-" + buddy + "-msg").hide();
-    $("#contact-" + buddy + "-AnswerCall").hide();
+    $(jq("contact-" + buddy + "-timer")).html("");
+    $(jq("contact-" + buddy + "-timer")).hide();
+    $(jq("contact-" + buddy + "-msg")).html("");
+    $(jq("contact-" + buddy + "-msg")).hide();
+    $(jq("contact-" + buddy + "-AnswerCall")).hide();
 
     // Create a new Line and move the session over to the line
     var callerID = session.remoteIdentity.displayName;
@@ -2415,10 +2415,10 @@ function AnswerVideoCall(buddy) {
 
     // Wire up UI
     wireupVideoSession(lineObj);
-    $("#contact-" + buddy + "-msg").html(lang.call_in_progress);
+    $(jq("contact-" + buddy + "-msg")).html(lang.call_in_progress);
 
     // Clear Answer Buttons
-    $("#contact-" + buddy + "-AnswerCall").hide();
+    $(jq("contact-" + buddy + "-AnswerCall")).hide();
 
     if(StartVideoFullScreen) ExpandVideoArea(lineObj.LineNumber);
 }
@@ -2427,15 +2427,15 @@ function RejectCall(buddy) {
     var session = getSession(buddy);
     if (session == null) {
         console.warn("Reject failed, null session");
-        $("#contact-" + buddy + "-msg").html(lang.call_failed);
-        $("#contact-" + buddy + "-AnswerCall").hide();
+        $(jq("contact-" + buddy + "-msg")).html(lang.call_failed);
+        $(jq("contact-" + buddy + "-AnswerCall")).hide();
     }
     session.data.terminateby = "us";
     session.reject({ 
         statusCode: 486, 
         reasonPhrase: "Busy Here" 
     });
-    $("#contact-" + buddy + "-msg").html(lang.call_rejected);
+    $(jq("contact-" + buddy + "-msg")).html(lang.call_rejected);
 }
 
 // Session Wireup
@@ -2927,7 +2927,7 @@ function MonitorBuddyConference(buddy){
                 if(channel.indexOf("+") > -1) channel = channel.split("+")[1]; // 800 | name | 24524352
 
                 if(JsonEvent.Event == "ConfbridgeStart"){
-                    $("#contact-" + buddy + "-conference").empty();
+                    $(jq("contact-" + buddy + "-conference")).empty();
                 }
                 else if(JsonEvent.Event == "ConfbridgeJoin") {
 
@@ -2940,28 +2940,28 @@ function MonitorBuddyConference(buddy){
                     html += " <div>" + JsonEvent.CallerIDNum +" - "+ JsonEvent.CallerIDName +"</div>";
                     html += (JsonEvent.Muted == "No")? "<div class=presenceText id=Muted>" + unMutedHTML +"</div>" : "<div class= id=Muted>" + mutedHTML +"</div>";
                     html += "</div>";
-                    $("#contact-" + buddy + "-conference").append(html);
+                    $(jq("contact-" + buddy + "-conference")).append(html);
                 }
                 else if(JsonEvent.Event == "ConfbridgeTalking") {
                     if(JsonEvent.TalkingStatus == "on"){
                         console.log("Buddy: "+ JsonEvent.CallerIDNum +" is Talking in Conference "+ JsonEvent.Conference);
-                        $("#contact-" + buddy + "-conference #cp-"+ JsonEvent.Conference +"-"+ channel +" #picture").prop("class", "Talking");
+                        $(jq("contact-" + buddy + "-conference #cp-"+ JsonEvent.Conference +"-"+ channel +" #picture")).prop("class", "Talking");
                     }
                     else {
                         console.log("Buddy: "+ JsonEvent.CallerIDNum +" is Not Talking in Conference "+ JsonEvent.Conference);
-                        $("#contact-" + buddy + "-conference #cp-"+ JsonEvent.Conference +"-"+ channel +" #picture").prop("class", "NotTalking");
+                        $(jq("contact-" + buddy + "-conference #cp-"+ JsonEvent.Conference +"-"+ channel +" #picture")).prop("class", "NotTalking");
                     }
                 }
                 else if(JsonEvent.Event == "ConfbridgeLeave") {
                     console.log("Buddy: "+ JsonEvent.CallerIDNum +" Left Conference "+ JsonEvent.Conference);
-                    $("#contact-" + buddy + "-conference #cp-"+ JsonEvent.Conference +"-"+ channel).remove();
+                    $(jq("contact-" + buddy + "-conference #cp-"+ JsonEvent.Conference +"-"+ channel)).remove();
                 }
                 else if(JsonEvent.Event == "ConfbridgeMute") {
-                    $("#contact-" + buddy + "-conference #cp-"+ JsonEvent.Conference +"-"+ channel +" #Muted").html(mutedHTML);
+                    $(jq("contact-" + buddy + "-conference #cp-"+ JsonEvent.Conference +"-"+ channel +" #Muted")).html(mutedHTML);
                     
                 }
                 else if(JsonEvent.Event == "ConfbridgeUnmute") {
-                    $("#contact-" + buddy + "-conference #cp-"+ JsonEvent.Conference +"-"+ channel +" #Muted").html(unMutedHTML);
+                    $(jq("contact-" + buddy + "-conference #cp-"+ JsonEvent.Conference +"-"+ channel +" #Muted")).html(unMutedHTML);
                 }
                 else if(JsonEvent.Event == "ConfbridgeEnd") {
                     console.log("Conference "+ buddyObj.identity +" ended, closing WebSocket");
@@ -2978,7 +2978,7 @@ function MonitorBuddyConference(buddy){
         }
 
         // Get the Group Details via API first
-        $("#contact-" + buddy + "-conference").empty();
+        $(jq("contact-" + buddy + "-conference")).empty();
 
     }
     else {
@@ -4013,8 +4013,8 @@ function RecieveBlf(notification) {
         if(buddyObj != null)
         {
             console.log("Setting Presence for "+ buddyObj.identity +" to "+ friendlyState);
-            $("#contact-" + buddyObj.identity + "-devstate").prop("class", dotClass);
-            $("#contact-" + buddyObj.identity + "-devstate-main").prop("class", dotClass);
+            $(jq("contact-" + buddyObj.identity + "-devstate")).prop("class", dotClass);
+            $(jq("contact-" + buddyObj.identity + "-devstate-main")).prop("class", dotClass);
             buddyObj.devState = dotClass;
             buddyObj.presence = friendlyState;
 
@@ -4024,8 +4024,8 @@ function RecieveBlf(notification) {
             if (friendlyState == "Ringing") friendlyState = lang.state_ringing;
             if (friendlyState == "On hold") friendlyState = lang.state_on_hold;
             if (friendlyState == "Unavailable") friendlyState = lang.state_unavailable;
-            $("#contact-" + buddyObj.identity + "-presence").html(friendlyState);
-            $("#contact-" + buddyObj.identity + "-presence-main").html(friendlyState);
+            $(jq("contact-" + buddyObj.identity + "-presence")).html(friendlyState);
+            $(jq("contact-" + buddyObj.identity + "-presence-main")).html(friendlyState);
         }
     }
     else if (ContentType == "application/dialog-info+xml")
@@ -4080,8 +4080,8 @@ function RecieveBlf(notification) {
         if(buddyObj != null)
         {
             console.log("Setting Presence for "+ buddyObj.identity +" to "+ friendlyState);
-            $("#contact-" + buddyObj.identity + "-devstate").prop("class", dotClass);
-            $("#contact-" + buddyObj.identity + "-devstate-main").prop("class", dotClass);
+            $(jq("contact-" + buddyObj.identity + "-devstate")).prop("class", dotClass);
+            $(jq("contact-" + buddyObj.identity + "-devstate-main")).prop("class", dotClass);
             buddyObj.devState = dotClass;
             buddyObj.presence = friendlyState;
 
@@ -4092,8 +4092,8 @@ function RecieveBlf(notification) {
             if (friendlyState == "Ringing") friendlyState = lang.state_ringing;
             if (friendlyState == "On hold") friendlyState = lang.state_on_hold;
             if (friendlyState == "Unavailable") friendlyState = lang.state_unavailable;
-            $("#contact-" + buddyObj.identity + "-presence").html(friendlyState);
-            $("#contact-" + buddyObj.identity + "-presence-main").html(friendlyState);
+            $(jq("contact-" + buddyObj.identity + "-presence")).html(friendlyState);
+            $(jq("contact-" + buddyObj.identity + "-presence-main")).html(friendlyState);
         }
     }
 }
@@ -4108,10 +4108,10 @@ function UnsubscribeAll() {
     for(var b=0; b<Buddies.length; b++) {
         var buddyObj = Buddies[b];
         if(buddyObj.type == "extension") {
-            $("#contact-" + buddyObj.identity + "-devstate").prop("class", "dotOffline");
-            $("#contact-" + buddyObj.identity + "-devstate-main").prop("class", "dotOffline");
-            $("#contact-" + buddyObj.identity + "-presence").html(lang.state_unknown);
-            $("#contact-" + buddyObj.identity + "-presence-main").html(lang.state_unknown);
+            $(jq("contact-" + buddyObj.identity + "-devstate")).prop("class", "dotOffline");
+            $(jq("contact-" + buddyObj.identity + "-devstate-main")).prop("class", "dotOffline");
+            $(jq("contact-" + buddyObj.identity + "-presence")).html(lang.state_unknown);
+            $(jq("contact-" + buddyObj.identity + "-presence-main")).html(lang.state_unknown);
         }
     }
 }
@@ -4143,7 +4143,7 @@ function SendChatMessage(buddy) {
     if (userAgent == null) return;
     if (!userAgent.isRegistered()) return;
 
-    var message = $("#contact-" + buddy + "-ChatMessage").val();
+    var message = $(jq("contact-" + buddy + "-ChatMessage")).val();
     message = $.trim(message);
     if(message == "") {
         Alert(lang.alert_empty_text_message, lang.no_message);
@@ -4227,9 +4227,9 @@ function SendChatMessage(buddy) {
     localDB.setItem(buddy + "-stream", JSON.stringify(currentStream));
 
     // Post Add Activity
-    $("#contact-" + buddy + "-ChatMessage").val("");
-    $("#contact-" + buddy + "-dictate-message").hide();
-    $("#contact-" + buddy + "-emoji-menu").hide();
+    $(jq("contact-" + buddy + "-ChatMessage")).val("");
+    $(jq("contact-" + buddy + "-dictate-message")).hide();
+    $(jq("contact-" + buddy + "-emoji-menu")).hide();
 
     if(buddyObj.recognition != null){
         buddyObj.recognition.abort();
@@ -4476,7 +4476,7 @@ function SendImageDataMessage(buddy, ImgDataUrl) {
         + "</td><td>"
         + "<div class=ourChatMessageText>" + formattedMessage + "</div>"
         + "</td></tr></table>";
-    $("#contact-" + buddy + "-ChatHistory").append(messageString);
+    $(jq("contact-" + buddy + "-ChatHistory")).append(messageString);
     updateScroll(buddy);
 
     ImageEditor_Cancel(buddy);
@@ -4577,7 +4577,7 @@ function SendFileDataMessage(buddy, FileDataUrl, fileName, fileSize) {
         + "</td><td>"
         + "<div class=ourChatMessageText>" + formattedMessage + "</div>"
         + "</td></tr></table>";
-    $("#contact-" + buddy + "-ChatHistory").append(messageString);
+    $(jq("contact-" + buddy + "-ChatHistory")).append(messageString);
     updateScroll(buddy);
 
     ImageEditor_Cancel(buddy);
@@ -4593,7 +4593,7 @@ function updateLineScroll(lineNum) {
     element.scrollTop = element.scrollHeight;
 }
 function updateScroll(buddy) {
-    var history = $("#contact-"+ buddy +"-ChatHistory");
+    var history = $(jq("contact-"+ buddy +"-ChatHistory"));
     if(history.children().length > 0) history.children().last().get(0).scrollIntoView(false);
     history.get(0).scrollTop = history.get(0).scrollHeight;
 }
@@ -4626,8 +4626,8 @@ function IncreaseMissedBadge(buddy) {
 
     // Update Badge
     // ============
-    $("#contact-" + buddy + "-missed").text(buddyObj.missed);
-    $("#contact-" + buddy + "-missed").show();
+    $(jq("contact-" + buddy + "-missed")).text(buddyObj.missed);
+    $(jq("contact-" + buddy + "-missed")).show();
     console.log("Set Missed badge for "+ buddy +" to: "+ buddyObj.missed);
 }
 function UpdateBuddyActivity(buddy){
@@ -4677,8 +4677,8 @@ function ClearMissedBadge(buddy) {
     }
 
 
-    $("#contact-" + buddy + "-missed").text(buddyObj.missed);
-    $("#contact-" + buddy + "-missed").hide(400);
+    $(jq("contact-" + buddy + "-missed")).text(buddyObj.missed);
+    $(jq("contact-" + buddy + "-missed")).hide(400);
 }
 
 // Outbound Calling
@@ -6881,11 +6881,11 @@ function DialByLine(type, buddy, numToDial, CallerID){
         var buddyType = (numDial.length > DidLength)? "contact" : "extension";
         // Assumption but anyway: If the number starts with a * or # then its probably not a subscribable did,  
         // and is probably a feature code.
-        if(buddyType.substring(0,1) == "*" || buddyType.substring(0,1) == "#") buddyType = "contact";
+        if(numDial.substring(0,1) == "*" || numDial.substring(0,1) == "#") buddyType = "contact";
+
         buddyObj = MakeBuddy(buddyType, true, true, true, (CallerID)? CallerID : numDial, numDial, true);
     }
     SelectBuddy(buddyObj.identity);
-    
 
     // Create a Line
     var newLineNumber = Lines.length + 1;
@@ -6939,7 +6939,7 @@ function SelectLine(lineNum){
     }
     // Update Buddy List
     for(var b = 0; b < Buddies.length; b++) {
-        $("#contact-" + Buddies[b].identity).prop("class", "buddy");
+        $(jq("contact-" + Buddies[b].identity)).prop("class", "buddy");
         Buddies[b].IsSelected = false;
     }
 
@@ -7370,7 +7370,7 @@ function MakeBuddy(type, update, focus, subscribe, callerID, did, addtolist){
 
     var buddyObj = null;
     if(type == "contact"){
-        var id = uID();
+        var id = did;
         var dateNow = utcDateNow();
         json.DataCollection.push({
             Type: "contact", 
@@ -7397,8 +7397,7 @@ function MakeBuddy(type, update, focus, subscribe, callerID, did, addtolist){
         }
     }
     else {
-console.log('nico');
-        var id = uID();
+        var id = did;
         var dateNow = utcDateNow();
         json.DataCollection.push({
             Type: "extension",
@@ -7416,7 +7415,7 @@ console.log('nico');
             Email: "",
             MemberCount: 0
         });
-        buddyObj = new Buddy("extension", id, callerID, did, "", "", "", dateNow, "", "");
+        buddyObj = new Buddy("contact", id, callerID, did, "", "", "", dateNow, "", "");
         if(addtolist==true) {
             AddBuddy(buddyObj, update, focus, subscribe);
         }
@@ -7706,6 +7705,7 @@ function UpdateBuddyList(){
     }
 }
 function AddBuddyMessageStream(buddyObj) {
+
     var html = "<table id=\"stream-"+ buddyObj.identity +"\" class=stream cellspacing=5 cellpadding=0>";
     html += "<tr><td class=streamSection style=\"height: 48px;\">";
 
@@ -7755,7 +7755,6 @@ function AddBuddyMessageStream(buddyObj) {
         html += "<div id=\"contact-"+ buddyObj.identity +"-presence-main\" class=presenceText>"+ buddyObj.Desc +"</div>";
     }
     html += "</div>";
-
     // Action Buttons
     html += "<div style=\"float:right; line-height: 46px;\">";
     html += "<button id=\"contact-"+ buddyObj.identity +"-btn-audioCall\" onclick=\"AudioCallMenu('"+ buddyObj.identity +"', this)\" class=roundButtons title=\""+ lang.audio_call +"\"><i class=\"fa fa-phone\"></i></button> ";
@@ -7802,6 +7801,9 @@ function AddBuddyMessageStream(buddyObj) {
     html += "</div>";
 
     html += "</td></tr>";
+
+
+
     if((buddyObj.type == "extension" || buddyObj.type == "group") && EnableTextMessaging) {
         html += "<tr><td  class=streamSection style=\"height:80px\">";
 
@@ -7988,9 +7990,9 @@ function SelectBuddy(buddy) {
     // Update Buddy List
     for(var b = 0; b < Buddies.length; b++) {
         var classStr = (Buddies[b].identity == buddy)? "buddySelected" : "buddy";
-        $("#contact-" + Buddies[b].identity).prop('class', classStr);
+        $(jq("contact-" + Buddies[b].identity)).prop('class', classStr);
 
-        $("#contact-"+ Buddies[b].identity +"-ChatHistory").empty();
+        $(jq("contact-"+ Buddies[b].identity +"-ChatHistory")).empty();
 
         Buddies[b].IsSelected = (Buddies[b].identity == buddy);
     }
@@ -8003,7 +8005,7 @@ function SelectBuddy(buddy) {
     RefreshStream(buddyObj);
 
     try{
-        $("#contact-" + buddy).get(0).scrollIntoViewIfNeeded();
+        $(jq("contact-" + buddy)).get(0).scrollIntoViewIfNeeded();
     } catch(e){}
 
     // Save Selected
@@ -8093,7 +8095,7 @@ function SearchStream(obj, buddy){
     }
 }
 function RefreshStream(buddyObj, filter) {
-    $("#contact-" + buddyObj.identity + "-ChatHistory").empty();
+    $(jq("contact-" + buddyObj.identity + "-ChatHistory")).empty();
 
     var json = JSON.parse(localDB.getItem(buddyObj.identity +"-stream"));
     if(json == null || json.DataCollection == null) return;
@@ -8215,7 +8217,7 @@ function RefreshStream(buddyObj, filter) {
                 messageString += "</td>";
                 messageString += "</tr></table>";
             }
-            $("#contact-" + buddyObj.identity + "-ChatHistory").prepend(messageString);
+            $(jq("contact-" + buddyObj.identity + "-ChatHistory")).prepend(messageString);
         } 
         else if (item.ItemType == "CDR") {
             // Add CDR 
@@ -8343,7 +8345,7 @@ function RefreshStream(buddyObj, filter) {
                 messageString += "</tr></table>";
             }
             // Messges are repended here, and appended when logging
-            $("#contact-" + buddyObj.identity + "-ChatHistory").prepend(messageString);
+            $(jq("contact-" + buddyObj.identity + "-ChatHistory")).prepend(messageString);
         } 
         else if(item.ItemType == "FILE"){
             // TODO
@@ -8373,12 +8375,12 @@ function ExpandMessage(obj, ItemId, buddy){
     HidePopup(500);
 }
 function ShowBuddyDial(obj, buddy){
-    $("#contact-"+ buddy +"-audio-dial").show();
-    $("#contact-"+ buddy +"-video-dial").show();
+    $(jq("contact-"+ buddy +"-audio-dial")).show();
+    $(jq("contact-"+ buddy +"-video-dial")).show();
 }
 function HideBuddyDial(obj, buddy){
-    $("#contact-"+ buddy +"-audio-dial").hide();
-    $("#contact-"+ buddy +"-video-dial").hide();
+    $(jq("contact-"+ buddy +"-audio-dial")).hide();
+    $(jq("contact-"+ buddy +"-video-dial")).hide();
 }
 function QuickDialAudio(buddy, obj, event){
     AudioCallMenu(buddy, obj);
@@ -8926,7 +8928,7 @@ function ShowMessgeMenu(obj, typeStr, cdrId, buddy) {
         if(id == 12){
             var msgtext = $("#msg-text-"+ cdrId).text();
             msgtext = "\""+ msgtext + "\"";
-            var textarea = $("#contact-"+ buddy +"-ChatMessage");
+            var textarea = $(jq("contact-"+ buddy +"-ChatMessage"));
             console.log("Quote Message:", msgtext);
             textarea.val(msgtext +"\n" + textarea.val());
             RefreshChatPreview(null, textarea.val(), buddy);
@@ -9084,8 +9086,8 @@ function AddMenu(obj, buddy){
     dhtmlxPopup.show(x, y, w, h);
 }
 function ShowEmojiBar(buddy){
-    var messageContainer = $("#contact-"+ buddy +"-emoji-menu");
-    var textarea = $("#contact-"+ buddy +"-ChatMessage");
+    var messageContainer = $(jq("contact-"+ buddy +"-emoji-menu"));
+    var textarea = $(jq("contact-"+ buddy +"-ChatMessage"));
 
     var menuBar = $("<div>");
     menuBar.prop("class", "emojiButton")
@@ -9135,8 +9137,8 @@ function ShowDictate(buddy){
     }
 
     var instructions = $("<div>");
-    var messageContainer = $("#contact-"+ buddy +"-dictate-message");
-    var textarea = $("#contact-"+ buddy +"-ChatMessage");
+    var messageContainer = $(jq("contact-"+ buddy +"-dictate-message"));
+    var textarea = $(jq("contact-"+ buddy +"-ChatMessage"));
 
     buddyObj.recognition.continuous = true;
     buddyObj.recognition.onstart = function() { 
@@ -9794,8 +9796,8 @@ function chatOnbeforepaste(event, obj, buddy){
                 }
                 placeholderImage.src = event.target.result;
 
-                // $("#contact-" + buddy + "-msgPreviewhtml").html("<img src=\""+ event.target.result +"\" style=\"max-width:320px; max-height:240px\" />");
-                // $("#contact-" + buddy + "-msgPreview").show();
+                // $(jq("contact-" + buddy + "-msgPreviewhtml")).html("<img src=\""+ event.target.result +"\" style=\"max-width:320px; max-height:240px\" />");
+                // $(jq("contact-" + buddy + "-msgPreview")).show();
             }
             reader.readAsDataURL(blob);
 
@@ -9835,8 +9837,8 @@ function RefreshChatPreview(event, str, buddy) {
     if (str != "") {
         var chatMessage = ReformatMessage(str);
 
-        $("#contact-" + buddy + "-msgPreviewhtml").html(chatMessage);
-        $("#contact-" + buddy + "-msgPreview").show();
+        $(jq("contact-" + buddy + "-msgPreviewhtml")).html(chatMessage);
+        $(jq("contact-" + buddy + "-msgPreview")).show();
     }
     else {
         ClearChatPreview(buddy);
@@ -9845,8 +9847,8 @@ function RefreshChatPreview(event, str, buddy) {
     updateScroll(buddy);
 }
 function ClearChatPreview(buddy) {
-    $("#contact-" + buddy + "-msgPreviewhtml").html("");
-    $("#contact-" + buddy + "-msgPreview").hide();
+    $(jq("contact-" + buddy + "-msgPreviewhtml")).html("");
+    $(jq("contact-" + buddy + "-msgPreview")).hide();
 }
 function ReformatMessage(str) {
     var msg = str;
@@ -9926,12 +9928,12 @@ function CreateImageEditor(buddy, placeholderImage){
     // Show Interface
     // ==============
     console.log("Setting Up ImageEditor...");
-    if($("#contact-" + buddy + "-imagePastePreview").is(":visible")) {
+    if($(jq("contact-" + buddy + "-imagePastePreview")).is(":visible")) {
         console.log("Resetting ImageEditor...");
-        $("#contact-" + buddy + "-imagePastePreview").empty();
+        $(jq("contact-" + buddy + "-imagePastePreview")).empty();
         RemoveCanvas("contact-" + buddy + "-imageCanvas")
     } else {
-        $("#contact-" + buddy + "-imagePastePreview").show();
+        $(jq("contact-" + buddy + "-imagePastePreview")).show();
     }
     // Create UI
     // =========
@@ -9961,22 +9963,22 @@ function CreateImageEditor(buddy, placeholderImage){
     toolBarDiv.append('&nbsp;|&nbsp;');
     toolBarDiv.append('<button class="toolBarButtons" title="Cancel" onclick="ImageEditor_Cancel(\''+ buddy +'\')"><i class="fa fa-times-circle"></i></button>');
     toolBarDiv.append('<button class="toolBarButtons" title="Send" onclick="ImageEditor_Send(\''+ buddy +'\')"><i class="fa fa-paper-plane"></i></button>');
-    $("#contact-" + buddy + "-imagePastePreview").append(toolBarDiv);
+    $(jq("contact-" + buddy + "-imagePastePreview")).append(toolBarDiv);
 
     // Create the canvas
     // =================
     var newCanvas = $('<canvas/>');
     newCanvas.prop("id", "contact-" + buddy + "-imageCanvas");
     newCanvas.css("border", "1px solid #CCCCCC");
-    $("#contact-" + buddy + "-imagePastePreview").append(newCanvas);
+    $(jq("contact-" + buddy + "-imagePastePreview")).append(newCanvas);
     console.log("Canvas for ImageEditor created...");
 
     var imgWidth = placeholderImage.width;
     var imgHeight = placeholderImage.height;
-    var maxWidth = $("#contact-" + buddy + "-imagePastePreview").width()-2; // for the border
+    var maxWidth = $(jq("contact-" + buddy + "-imagePastePreview")).width()-2; // for the border
     var maxHeight = 480;
-    $("#contact-" + buddy + "-imageCanvas").prop("width", maxWidth);
-    $("#contact-" + buddy + "-imageCanvas").prop("height", maxHeight);
+    $(jq("contact-" + buddy + "-imageCanvas")).prop("width", maxWidth);
+    $(jq("contact-" + buddy + "-imageCanvas")).prop("height", maxHeight);
 
     // Handle Initial Zoom
     var zoomToFitImage = 1;
@@ -10000,16 +10002,16 @@ function CreateImageEditor(buddy, placeholderImage){
         imgWidth = imgWidth * zoomToFitImage;
         imgHeight = imgHeight * zoomToFitImage;
         console.log("resizing canvas to fit new image size...");
-        $("#contact-" + buddy + "-imageCanvas").prop("width", imgWidth);
-        $("#contact-" + buddy + "-imageCanvas").prop("height", imgHeight);
+        $(jq("contact-" + buddy + "-imageCanvas")).prop("width", imgWidth);
+        $(jq("contact-" + buddy + "-imageCanvas")).prop("height", imgHeight);
     }
     else {
         console.log("Image is able to fit, resizing canvas...");
-        $("#contact-" + buddy + "-imageCanvas").prop("width", imgWidth);
-        $("#contact-" + buddy + "-imageCanvas").prop("height", imgHeight);
+        $(jq("contact-" + buddy + "-imageCanvas")).prop("width", imgWidth);
+        $(jq("contact-" + buddy + "-imageCanvas")).prop("height", imgHeight);
     }
 
-    // $("#contact-" + buddy + "-imageCanvas").css("cursor", "zoom-in");
+    // $(jq("contact-" + buddy + "-imageCanvas")).css("cursor", "zoom-in");
 
     // Fabric Canvas API
     // =================
@@ -10110,7 +10112,7 @@ function CreateImageEditor(buddy, placeholderImage){
 
     // Add Key Press Events
     // ====================
-    $("#contact-" + buddy + "-imagePastePreview").keydown(function(evt) {
+    $(jq("contact-" + buddy + "-imagePastePreview")).keydown(function(evt) {
         evt = evt || window.event;
         var key = evt.keyCode;
         console.log("Key press on Image Editor ("+ buddy +"): "+ key);
@@ -10354,9 +10356,9 @@ var ImageEditor_ClearAll = function (buddy){
 var ImageEditor_Cancel = function (buddy){
     console.log("Removing ImageEditor...");
 
-    $("#contact-" + buddy + "-imagePastePreview").empty();
+    $(jq("contact-" + buddy + "-imagePastePreview")).empty();
     RemoveCanvas("contact-" + buddy + "-imageCanvas");
-    $("#contact-" + buddy + "-imagePastePreview").hide();
+    $(jq("contact-" + buddy + "-imagePastePreview")).hide();
 }
 var ImageEditor_Send = function (buddy){
     var canvas = GetCanvas("contact-" + buddy + "-imageCanvas");
@@ -10372,8 +10374,8 @@ var ImageEditor_Send = function (buddy){
 // Find something in the message stream
 // ====================================
 function FindSomething(buddy) {
-    $("#contact-" + buddy + "-search").toggle();
-    if($("#contact-" + buddy + "-search").is(":visible") == false){
+    $(jq("contact-" + buddy + "-search")).toggle();
+    if($(jq("contact-" + buddy + "-search")).is(":visible") == false){
         RefreshStream(FindBuddyByIdentity(buddy));
     }
     updateScroll(buddy);
@@ -10392,7 +10394,7 @@ function onFileDragDrop(e, buddy){
     console.log("You are about to upload " + filesArray.length + " file.");
 
     // Clear style
-    $("#contact-"+ buddy +"-ChatHistory").css("outline", "none");
+    $(jq("contact-"+ buddy +"-ChatHistory")).css("outline", "none");
 
     for (var f = 0; f < filesArray.length; f++){
         var fileObj = filesArray[f];
@@ -10419,12 +10421,12 @@ function onFileDragDrop(e, buddy){
 }
 function cancelDragDrop(e, buddy){
     // dragleave dragend
-    $("#contact-"+ buddy +"-ChatHistory").css("outline", "none");
+    $(jq("contact-"+ buddy +"-ChatHistory")).css("outline", "none");
     preventDefault(e);
 }
 function setupDragDrop(e, buddy){
     // dragover dragenter
-    $("#contact-"+ buddy +"-ChatHistory").css("outline", "2px dashed #184369");
+    $(jq("contact-"+ buddy +"-ChatHistory")).css("outline", "2px dashed #184369");
     preventDefault(e);
 }
 function preventDefault(e){
@@ -10712,6 +10714,9 @@ function HidePopup(timeout){
 }
 function addHistory(clid,did) {
    console.log("add history "+clid+", "+did);
+}
+function jq( myid ) {
+    return "#" + myid.replace( /(:|\.|\[|\]|,|=|@|\*)/g, "\\$1" );
 }
 // Device Detection
 // ================
