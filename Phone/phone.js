@@ -10722,6 +10722,7 @@ function addHistory(clid,did) {
    console.log("add history "+clid+", "+did);
 }
 function jq( myid ) {
+    myid = myid.replace(/ /g,"_");
     return "#" + myid.replace( /(:|\.|\[|\]|,|=|@|\*)/g, "\\$1" );
 }
 // Device Detection
