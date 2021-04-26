@@ -1672,10 +1672,12 @@ function InitUi(){
               $('#deregicon').removeClass('fa-wifi');
               $('#deregicon').addClass('fa-ban');
               $('#dereglink').css('backgroundColor','#f00');
+              localDB.setItem("DoNotDisturbEnabled", "1");
           } else {
               $('#deregicon').removeClass('fa-ban');
               $('#deregicon').addClass('fa-wifi');
               $('#dereglink').css('backgroundColor','#3fbd3f');
+              localDB.setItem("DoNotDisturbEnabled", "0");
           }
 
           PopulateBuddiesIssabel(data.buddies);
@@ -7118,7 +7120,7 @@ function AddLineHtml(lineObj){
     html += "</div>";
 
     html += "</td></tr>";
-    html += "<tr><td class=\"streamSection streamSectionBackground\" style=\"background-image:url('"+ hostingPrefex +"wp_1.png')\">";
+    html += "<tr><td class=\"streamSection streamSectionBackground\" style=\"background-image:url('"+ hostingPrefex +"pattern.png')\">";
     
     html += "<div id=\"line-"+ lineObj.LineNumber +"-CallDetails\" class=\"chatHistory cleanScroller\">";
     // In Call Activity
@@ -7762,7 +7764,11 @@ function AddBuddyMessageStream(buddyObj) {
         html += "<button id=\"contact-"+ buddyObj.identity +"-btn-videoCall\" onclick=\"DialByLine('video', '"+ buddyObj.identity +"', '"+ buddyObj.ExtNo +"');\" class=roundButtons title=\""+ lang.video_call +"\"><i class=\"fa fa-video-camera\"></i></button> ";
     }
     html += "<button id=\"contact-"+ buddyObj.identity +"-btn-search\" onclick=\"FindSomething('"+ buddyObj.identity +"')\" class=roundButtons title=\""+ lang.find_something +"\"><i class=\"fa fa-search\"></i></button> ";
-    html += "<button id=\"contact-"+ buddyObj.identity +"-btn-remove\" onclick=\"RemoveBuddy('"+ buddyObj.identity +"')\" class=roundButtons title=\""+ lang.remove +"\"><i class=\"fa fa-trash\"></i></button> ";
+
+    if(buddyObj.type == "contact") {
+        html += "<button id=\"contact-"+ buddyObj.identity +"-btn-remove\" onclick=\"RemoveBuddy('"+ buddyObj.identity +"')\" class=roundButtons title=\""+ lang.remove +"\"><i class=\"fa fa-trash\"></i></button> ";
+    }
+
     html += "</div>";
 
     // Separator --------------------------------------------------------------------------
@@ -7794,7 +7800,7 @@ function AddBuddyMessageStream(buddyObj) {
     html += "</div>";
 
     html += "</td></tr>";
-    html += "<tr><td class=\"streamSection streamSectionBackground\" style=\"background-image:url('"+ hostingPrefex +"wp_1.png')\">";
+    html += "<tr><td class=\"streamSection streamSectionBackground\" style=\"background-image:url('"+ hostingPrefex +"pattern.png')\">";
 
     html += "<div id=\"contact-"+ buddyObj.identity +"-ChatHistory\" class=\"chatHistory cleanScroller\" ondragenter=\"setupDragDrop(event, '"+ buddyObj.identity +"')\" ondragover=\"setupDragDrop(event, '"+ buddyObj.identity +"')\" ondragleave=\"cancelDragDrop(event, '"+ buddyObj.identity +"')\" ondrop=\"onFileDragDrop(event, '"+ buddyObj.identity +"')\">";
     // Previous Chat messages
