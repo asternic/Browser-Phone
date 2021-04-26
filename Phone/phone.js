@@ -2115,7 +2115,7 @@ function ReceiveCall(session) {
     }
 
     // Check if that buddy is not already on a call??
-    var streamVisible = $("#stream-"+ buddyObj.identity).is(":visible");
+    var streamVisible = $(jq("stream-"+ buddyObj.identity)).is(":visible");
     if (streamVisible) {
         // Remove anything distracting
         HidePopup();
@@ -4336,7 +4336,7 @@ function ReceiveMessage(message) {
 
     // Handle Stream Not visible
     // =========================
-    var streamVisible = $("#stream-"+ buddyObj.identity).is(":visible");
+    var streamVisible = $(jq("stream-"+ buddyObj.identity)).is(":visible");
     if (!streamVisible) {
         // Add or Increase the Badge
         IncreaseMissedBadge(buddyObj.identity);
@@ -7370,7 +7370,7 @@ function MakeBuddy(type, update, focus, subscribe, callerID, did, addtolist){
 
     var buddyObj = null;
     if(type == "contact"){
-        var id = did;
+        var id = profileUserID+"-"+did;
         var dateNow = utcDateNow();
         json.DataCollection.push({
             Type: "contact", 
@@ -7397,7 +7397,7 @@ function MakeBuddy(type, update, focus, subscribe, callerID, did, addtolist){
         }
     }
     else {
-        var id = did;
+        var id = profileUserID+"-"+did;
         var dateNow = utcDateNow();
         json.DataCollection.push({
             Type: "extension",
@@ -7853,7 +7853,7 @@ function RemoveBuddyMessageStream(buddyObj){
     UpdateBuddyList();
 
     // Remove Stream
-    $("#stream-"+ buddyObj.identity).remove();
+    $(jq("stream-"+ buddyObj.identity)).remove();
     var stream = JSON.parse(localDB.getItem(buddyObj.identity + "-stream"));
     localDB.removeItem(buddyObj.identity + "-stream");
 
@@ -7976,7 +7976,7 @@ function SelectBuddy(buddy) {
     $(".streamSelected").each(function () {
         $(this).prop('class', 'stream');
     });
-    $("#stream-" + buddy).prop('class', 'streamSelected');
+    $(jq("stream-" + buddy)).prop('class', 'streamSelected');
 
     // Update Lines List
     for(var l = 0; l < Lines.length; l++) {
