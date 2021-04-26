@@ -7528,9 +7528,10 @@ function PopulateBuddiesIssabel(buddies){
                 lastActivity = lastAct[item.cID];
             }
 
-            var buddy = new Buddy("contact", item.cID, item.DisplayName, "", item.MobileNumber, item.ContactNumber1, item.ContactNumber2, lastActivity, item.Description, item.Email);
+            contactId = jq(item.DisplayName).substr(1);
+            var buddy = new Buddy("contact", contactId, item.DisplayName, "", item.MobileNumber, item.ContactNumber1, item.ContactNumber2, lastActivity, item.Description, item.Email);
             AddBuddy(buddy, false, false);
-            jsonitem.cID = item.cID;
+            jsonitem.cID = contactId;
             jsonitem.ContactNumber1 = item.ContactNumber1;
             jsonitem.ContactNumber2 = item.ContactNumber2;
             jsonitem.MobileNumber = item.MobileNumber;

@@ -80,7 +80,7 @@ $external = $padress_book->getAddressBook(NULL,NULL,NULL,NULL,FALSE,$id_user);
 
 $final=array();
 foreach($external as $data) {
-    $info = array("ExtensionNumber"=>'',"ContactNumber1"=>$data['home_phone'],"ContactNumber2"=>$data['cell_phone'],"DisplayName"=>$data['name'].' '.$data['lastname'], "Email"=>$data['email'], "Description"=> $data['company'], "Type"=>"contact");
+    $info = array("ExtensionNumber"=>'',"MobileNumber"=>$data["cell_phone"],"ContactNumber1"=>$data['telefono'],"ContactNumber2"=>$data['home_phone'],"DisplayName"=>$data['name'].' '.$data['lastname'], "Email"=>$data['email'], "Description"=> $data['company'], "Type"=>"contact");
     $final[] = $info;
 }
 
