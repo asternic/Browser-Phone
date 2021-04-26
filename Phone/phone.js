@@ -1937,7 +1937,7 @@ function ReceiveCall(session) {
         
         var buddyType = (did.length > DidLength)? "contact" : "extension";
         var focusOnBuddy = (CurrentCalls==0);
-        buddyObj = MakeBuddy(buddyType, true, focusOnBuddy, true, callerID, did, false);
+        buddyObj = MakeBuddy(buddyType, true, focusOnBuddy, true, callerID, did, true);
         
     } else {
         // Double check that the buddy has the same caller ID as the incoming call
@@ -6882,7 +6882,7 @@ function DialByLine(type, buddy, numToDial, CallerID){
         // Assumption but anyway: If the number starts with a * or # then its probably not a subscribable did,  
         // and is probably a feature code.
         if(buddyType.substring(0,1) == "*" || buddyType.substring(0,1) == "#") buddyType = "contact";
-        buddyObj = MakeBuddy(buddyType, true, true, true, (CallerID)? CallerID : numDial, numDial, false);
+        buddyObj = MakeBuddy(buddyType, true, true, true, (CallerID)? CallerID : numDial, numDial, true);
     }
     SelectBuddy(buddyObj.identity);
     
