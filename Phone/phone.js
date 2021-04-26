@@ -7478,13 +7478,13 @@ function PopulateBuddiesIssabel(buddies){
 
     if(json !== null) {
         $.each(json.DataCollection, function (i, item) {
-            if(item.type.g == "extension"){
+            if(item.type == "extension"){
                 lastAct[item.uID]=item.lastActivity;
             }
-            else if(item.type.g == "contact"){
+            else if(item.type == "contact"){
                 lastAct[item.cID]=item.lastActivity;
             }
-            else if(item.type.g == "group"){
+            else if(item.type == "group"){
                 lastAct[item.gID]=item.lastActivity;
             }
         });
