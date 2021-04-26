@@ -7478,14 +7478,14 @@ function PopulateBuddiesIssabel(buddies){
 
     if(json !== null) {
         $.each(json.DataCollection, function (i, item) {
-            if(item.Type == "extension"){
-                lastAct[item.uID]=item.LastActivity;
+            if(item.type.g == "extension"){
+                lastAct[item.uID]=item.lastActivity;
             }
-            else if(item.Type == "contact"){
-                lastAct[item.cID]=item.LastActivity;
+            else if(item.type.g == "contact"){
+                lastAct[item.cID]=item.lastActivity;
             }
-            else if(item.Type == "group"){
-                lastAct[item.gID]=item.LastActivity;
+            else if(item.type.g == "group"){
+                lastAct[item.gID]=item.lastActivity;
             }
         });
     }
