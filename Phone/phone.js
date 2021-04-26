@@ -7355,6 +7355,14 @@ var Buddy = function(type, identity, CallerIDName, ExtNo, MobileNumber, ContactN
     this.missed = 0;
     this.IsSelected = false;
     this.imageObjectURL = "";
+
+    if(type=='contact') {
+        this.cID = identity;
+    } else if(type=='extension') {
+        this.uID = identity;
+    } else {
+        this.gID = identity;
+    }
 }
 function InitUserBuddies(){
     var template = { TotalRows:0, DataCollection:[] }
@@ -7488,22 +7496,7 @@ function PopulateBuddiesIssabel(buddies){
 
         var dateNow = utcDateNow();
 
-        var jsonitem = {
-            Type: item.Type,
-            LastActivity: dateNow,
-            ExtNo: "",
-            MobileNumber: "",
-            ContactNumber1: "",
-            ContactNumber2: "",
-            uID: null,
-            cID: null,
-            gID: null,
-            DisplayName: "",
-            Position: "",
-            Description: "",
-            Email: "",
-            MemberCount: 0
-        };
+        var jsonitem = {};
 
         if(item.Type == "extension"){
             // extension
@@ -7515,9 +7508,12 @@ function PopulateBuddiesIssabel(buddies){
 
             var buddy = new Buddy("extension", item.ExtensionNumber, item.DisplayName, item.ExtensionNumber, item.MobileNumber, item.ContactNumber1, item.ContactNumber2, lastActivity, item.Description, item.Email);
             AddBuddy(buddy, false, false);
-            jsonitem.ExtNo = item.ExtensionNumber;
-            jsonitem.uID = item.ExtensionNumber;
-            jsonitem.identity = item.ExtensionNumber;
+
+            for (var key in buddy) {
+                if (buddy.hasOwnProperty(key)) {
+                    jsonitem[key] = buddy[key];
+                }
+            }
             json.DataCollection.push(jsonitem);
         }
         else if(item.Type == "contact"){
@@ -7531,10 +7527,11 @@ function PopulateBuddiesIssabel(buddies){
             contactId = jq(item.DisplayName).substr(1);
             var buddy = new Buddy("contact", contactId, item.DisplayName, "", item.MobileNumber, item.ContactNumber1, item.ContactNumber2, lastActivity, item.Description, item.Email);
             AddBuddy(buddy, false, false);
-            jsonitem.cID = contactId;
-            jsonitem.ContactNumber1 = item.ContactNumber1;
-            jsonitem.ContactNumber2 = item.ContactNumber2;
-            jsonitem.MobileNumber = item.MobileNumber;
+            for (var key in buddy) {
+                if (buddy.hasOwnProperty(key)) {
+                    jsonitem[key] = buddy[key];
+                }
+            }
             json.DataCollection.push(jsonitem);
         }
         else if(item.Type == "group"){
