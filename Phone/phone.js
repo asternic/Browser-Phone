@@ -9891,7 +9891,7 @@ function ReformatMessage(str) {
 function getPicture(buddy, typestr){
 
     if(buddy == null) {
-        return hostingPrefex + "default.png";
+        return '/index.php?menu=address_book&type=internal&action=getImage&idPhoto=-1&thumbnail=yes&rawmode=yes';
     }
 
     if(buddy == "profilePicture"){
@@ -9920,7 +9920,7 @@ function getPicture(buddy, typestr){
 
     var dbImg = localDB.getItem("img-"+ buddy +"-"+ typestr);
     if(dbImg == null){
-        return hostingPrefex + "default.png";
+        return '/index.php?menu=address_book&type=internal&action=getImage&idPhoto=-1&thumbnail=yes&rawmode=yes';
     }
     else {
         buddyObj.imageObjectURL = URL.createObjectURL(base64toBlob(dbImg, 'image/png'));
