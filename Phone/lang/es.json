@@ -219,8 +219,8 @@
     "call_on_mute" : "Llamada Silenciada",
     "call_off_mute" : "Silenciamiento desactivado",
     "tag_call" : "Etiquetar Llamada",
-    "clear_flag" : "Clear Flag",
-    "flag_call" : "Flag Call",
+    "clear_flag" : "Desmarcar llamada",
+    "flag_call" : "Marcar llamada",
     "edit_comment" : "Editar Comentario",
     "copy_message" : "Copiar Mensaje",
     "quote_message" : "Citar Mensaje",
@@ -274,5 +274,7 @@
     "cancelled_by_caller": "Cancelada por usuario",
     "normal_call_clearing": "Finalización de Llamada Normal",
     "Session Progress": "Sesión en Progreso",
-    "Service Unavailable": "Servicio no Disponible"
+    "Service Unavailable": "Servicio no Disponible",
+    "inbound": "entrante",
+    "outbound": "saliente"
 }
