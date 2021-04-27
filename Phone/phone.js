@@ -1452,14 +1452,14 @@ function EditBuddyWindow(buddy){
         for(var b = 0; b < Buddies.length; b++) {
             if(buddyObj.Type == "extension"){
                 if(buddyObj.uID == Buddies[b].identity){
-                    Buddies[b].lastActivity = buddyObj.LastActivity;
+                    Buddies[b].LastActivity = buddyObj.LastActivity;
                     Buddies[b].CallerIDName = buddyObj.DisplayName;
                     Buddies[b].Desc = buddyObj.Position;
                 }                
             }
             else if(buddyObj.Type == "contact") {
                 if(buddyObj.cID == Buddies[b].identity){
-                    Buddies[b].lastActivity = buddyObj.LastActivity;
+                    Buddies[b].LastActivity = buddyObj.LastActivity;
                     Buddies[b].CallerIDName = buddyObj.DisplayName;
                     Buddies[b].Desc = buddyObj.Description;
                 }                
@@ -4639,7 +4639,7 @@ function UpdateBuddyActivity(buddy){
     // Update Last Activity Time
     // =========================
     var timeStamp = utcDateNow();
-    buddyObj.lastActivity = timeStamp;
+    buddyObj.LastActivity = timeStamp;
     console.log("Last Activity is now: "+ timeStamp);
 
     // Take Out
@@ -7339,7 +7339,7 @@ function RefreshLineActivity(lineNum){
 
 // Buddy & Contacts
 // ================
-var Buddy = function(type, identity, CallerIDName, ExtNo, MobileNumber, ContactNumber1, ContactNumber2, lastActivity, desc, Email){
+var Buddy = function(type, identity, CallerIDName, ExtNo, MobileNumber, ContactNumber1, ContactNumber2, LastActivity, desc, Email){
     this.type = type; // extension | contact | group
     this.identity = identity;
     this.CallerIDName = CallerIDName;
@@ -7349,7 +7349,7 @@ var Buddy = function(type, identity, CallerIDName, ExtNo, MobileNumber, ContactN
     this.MobileNumber = MobileNumber;
     this.ContactNumber1 = ContactNumber1;
     this.ContactNumber2 = ContactNumber2;
-    this.lastActivity = lastActivity; // Full Date as string eg "1208-03-21 15:34:23 UTC"
+    this.LastActivity = LastActivity; // Full Date as string eg "1208-03-21 15:34:23 UTC"
     this.devState = "dotOffline";
     this.presence = "Unknown";
     this.missed = 0;
@@ -7479,13 +7479,13 @@ function PopulateBuddiesIssabel(buddies){
     if(json !== null) {
         $.each(json.DataCollection, function (i, item) {
             if(item.type == "extension"){
-                lastAct[item.uID]=item.lastActivity;
+                lastAct[item.uID]=item.LastActivity;
             }
             else if(item.type == "contact"){
-                lastAct[item.cID]=item.lastActivity;
+                lastAct[item.cID]=item.LastActivity;
             }
             else if(item.type == "group"){
-                lastAct[item.gID]=item.lastActivity;
+                lastAct[item.gID]=item.LastActivity;
             }
         });
     }
@@ -7498,15 +7498,15 @@ function PopulateBuddiesIssabel(buddies){
 
         var jsonitem = {};
 
-        if(item.Type == "extension"){
+        if(item.type == "extension"){
             // extension
             if(typeof(lastAct[item.uID])=='undefined') {
-                lastActivity = dateNow;
+                LastActivity = dateNow;
             } else {
-                lastActivity = lastAct[item.uID];
+                LastActivity = lastAct[item.uID];
             }
 
-            var buddy = new Buddy("extension", item.ExtensionNumber, item.DisplayName, item.ExtensionNumber, item.MobileNumber, item.ContactNumber1, item.ContactNumber2, lastActivity, item.Description, item.Email);
+            var buddy = new Buddy("extension", item.ExtensionNumber, item.DisplayName, item.ExtensionNumber, item.MobileNumber, item.ContactNumber1, item.ContactNumber2, LastActivity, item.Description, item.Email);
             AddBuddy(buddy, false, false);
 
             for (var key in buddy) {
@@ -7516,16 +7516,16 @@ function PopulateBuddiesIssabel(buddies){
             }
             json.DataCollection.push(jsonitem);
         }
-        else if(item.Type == "contact"){
+        else if(item.type == "contact"){
             // contact
             if(typeof(lastAct[item.cID])=='undefined') {
-                lastActivity = dateNow;
+                LastActivity = dateNow;
             } else {
-                lastActivity = lastAct[item.cID];
+                LastActivity = lastAct[item.cID];
             }
 
             contactId = jq(item.DisplayName).substr(1);
-            var buddy = new Buddy("contact", contactId, item.DisplayName, "", item.MobileNumber, item.ContactNumber1, item.ContactNumber2, lastActivity, item.Description, item.Email);
+            var buddy = new Buddy("contact", contactId, item.DisplayName, "", item.MobileNumber, item.ContactNumber1, item.ContactNumber2, LastActivity, item.Description, item.Email);
             AddBuddy(buddy, false, false);
             for (var key in buddy) {
                 if (buddy.hasOwnProperty(key)) {
@@ -7534,14 +7534,14 @@ function PopulateBuddiesIssabel(buddies){
             }
             json.DataCollection.push(jsonitem);
         }
-        else if(item.Type == "group"){
+        else if(item.type == "group"){
             // group
             if(typeof(lastAct[item.gID])=='undefined') {
-                lastActivity = dateNow;
+                LastActivity = dateNow;
             } else {
-                lastActivity = lastAct[item.gID];
+                LastActivity = lastAct[item.gID];
             }
-            var buddy = new Buddy("group", item.gID, item.DisplayName, item.ExtensionNumber, "", "", "", lastActivity, item.MemberCount + " member(s)", item.Email);
+            var buddy = new Buddy("group", item.gID, item.DisplayName, item.ExtensionNumber, "", "", "", LastActivity, item.MemberCount + " member(s)", item.Email);
             AddBuddy(buddy, false, false);
             jsonitem.gID = item.gID;
             json.DataCollection.push(jsonitem);
@@ -7609,8 +7609,8 @@ function UpdateBuddyList(){
     // Sort and shuffle Buddy List
     // ===========================
     Buddies.sort(function(a, b){
-        var aMo = moment.utc(a.lastActivity.replace(" UTC", ""));
-        var bMo = moment.utc(b.lastActivity.replace(" UTC", ""));
+        var aMo = moment.utc(a.LastActivity.replace(" UTC", ""));
+        var bMo = moment.utc(b.LastActivity.replace(" UTC", ""));
         if (aMo.isSameOrAfter(bMo, "second")) {
             return -1;
         } else return 1;
@@ -7631,14 +7631,14 @@ function UpdateBuddyList(){
         }
 
         var today = moment.utc();
-        var lastActivity = moment.utc(buddyObj.lastActivity.replace(" UTC", ""));
+        var LastActivity = moment.utc(buddyObj.LastActivity.replace(" UTC", ""));
         var displayDateTime = "";
-        if(lastActivity.isSame(today, 'day'))
+        if(LastActivity.isSame(today, 'day'))
         {
-            displayDateTime = lastActivity.local().format(DisplayTimeFormat);
+            displayDateTime = LastActivity.local().format(DisplayTimeFormat);
         } 
         else {
-            displayDateTime = lastActivity.local().format(DisplayDateFormat);
+            displayDateTime = LastActivity.local().format(DisplayDateFormat);
         }
 
         var classStr = (buddyObj.IsSelected)? "buddySelected" : "buddy";
