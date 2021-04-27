@@ -7627,6 +7627,7 @@ function UpdateBuddyList(){
             if(buddyObj.CallerIDName.toLowerCase().indexOf(filter.toLowerCase()) > -1 ) display = true;
             if(buddyObj.ExtNo.toLowerCase().indexOf(filter.toLowerCase()) > -1 ) display = true;
             if(buddyObj.Desc.toLowerCase().indexOf(filter.toLowerCase()) > -1 ) display = true;
+            if(buddyObj.type.toLowerCase().indexOf(filter.toLowerCase()) > -1 ) display = true;
             if(!display) continue;
         }
 
