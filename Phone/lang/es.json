@@ -272,5 +272,6 @@
     "associate_extension_required_unauthorized": "No hay extension asociada. Contacte a su administrador para configurar dicha asociación.",
     "invalid_session": "Sesión Inválida. Por favor autentique nuevamente con Issabel",
     "cancelled_by_caller": "Cancelada por usuario",
-    "normal_call_clearing": "Finalización de Llamada Normal"
+    "normal_call_clearing": "Finalización de Llamada Normal",
+    "Session Progress": "Sesión en Progreso"
 }

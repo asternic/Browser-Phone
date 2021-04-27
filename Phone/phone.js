@@ -2482,7 +2482,8 @@ function wireupAudioSession(lineObj) {
             }
             session.data.earlyMedia = earlyMedia;
         } else {
-            $(MessageObjId).html(response.reason_phrase + "...");
+            reason = typeof(lang[response.reason_phrase])=='undefined'?response.reason_phrase:lang[response.reason_phrase];
+            $(MessageObjId).html(reason + "...");
         }
 
         // Custom Web hook
