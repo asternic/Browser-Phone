@@ -273,5 +273,6 @@
     "invalid_session": "Sesión Inválida. Por favor autentique nuevamente con Issabel",
     "cancelled_by_caller": "Cancelada por usuario",
     "normal_call_clearing": "Finalización de Llamada Normal",
-    "Session Progress": "Sesión en Progreso"
+    "Session Progress": "Sesión en Progreso",
+    "Service Unavailable": "Servicio no Disponible"
 }
