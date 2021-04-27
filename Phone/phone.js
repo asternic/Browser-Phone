@@ -448,8 +448,8 @@ function AddSomeoneWindow(numberStr){
                     LastActivity: dateNow,
                     ExtensionNumber: "", 
                     MobileNumber: $("#AddSomeone_Mobile").val(),
-                    ContactNumber1: $("#AddSomeone_Num1").val(),
-                    ContactNumber2: $("#AddSomeone_Num2").val(),
+                    HomeNumber: $("#AddSomeone_Num1").val(),
+                    WorkNumber: $("#AddSomeone_Num2").val(),
                     uID: null,
                     cID: id,
                     gID: null,
@@ -473,8 +473,8 @@ function AddSomeoneWindow(numberStr){
                     LastActivity: dateNow,
                     ExtensionNumber: $("#AddSomeone_Exten").val(),
                     MobileNumber: $("#AddSomeone_Mobile").val(),
-                    ContactNumber1: $("#AddSomeone_Num1").val(),
-                    ContactNumber2: $("#AddSomeone_Num2").val(),
+                    HomeNumber: $("#AddSomeone_Num1").val(),
+                    WorkNumber: $("#AddSomeone_Num2").val(),
                     uID: id,
                     cID: null,
                     gID: null,
@@ -1397,10 +1397,10 @@ function EditBuddyWindow(buddy){
     html += "<div><input id=AddSomeone_Email class=UiInputText type=text placeholder='"+ lang.email +"' value='"+ ((buddyObj.Email && buddyObj.Email != "null" && buddyObj.Email != "undefined")? buddyObj.Email : "") +"'></div>";
 
     html += "<div class=UiText>"+ lang.contact_number_1 +":</div>";
-    html += "<div><input id=AddSomeone_Num1 class=UiInputText type=text placeholder='"+ lang.eg_contact_number_1 +"' value='"+((buddyObj.ContactNumber1 && buddyObj.ContactNumber1 != "null" && buddyObj.ContactNumber1 != "undefined")? buddyObj.ContactNumber1 : "") +"'></div>";
+    html += "<div><input id=AddSomeone_Num1 class=UiInputText type=text placeholder='"+ lang.eg_contact_number_1 +"' value='"+((buddyObj.HomeNumber && buddyObj.HomeNumber != "null" && buddyObj.HomeNumber != "undefined")? buddyObj.HomeNumber : "") +"'></div>";
 
     html += "<div class=UiText>"+ lang.contact_number_2 +":</div>";
-    html += "<div><input id=AddSomeone_Num2 class=UiInputText type=text placeholder='"+ lang.eg_contact_number_2 +"' value='"+ ((buddyObj.ContactNumber2 && buddyObj.ContactNumber2 != "null" && buddyObj.ContactNumber2 != "undefined")? buddyObj.ContactNumber2 : "") +"'></div>";
+    html += "<div><input id=AddSomeone_Num2 class=UiInputText type=text placeholder='"+ lang.eg_contact_number_2 +"' value='"+ ((buddyObj.WorkNumber && buddyObj.WorkNumber != "null" && buddyObj.WorkNumber != "undefined")? buddyObj.WorkNumber : "") +"'></div>";
     html += "</div>"
     OpenWindow(html, lang.edit, 480, 640, false, true, lang.save, function(){
 
@@ -1414,8 +1414,8 @@ function EditBuddyWindow(buddy){
         }
         buddyObj.MobileNumber = $("#AddSomeone_Mobile").val();
         buddyObj.Email = $("#AddSomeone_Email").val();
-        buddyObj.ContactNumber1 = $("#AddSomeone_Num1").val();
-        buddyObj.ContactNumber2 = $("#AddSomeone_Num2").val();
+        buddyObj.HomeNumber = $("#AddSomeone_Num1").val();
+        buddyObj.WorkNumber = $("#AddSomeone_Num2").val();
 
         // Update Image
         var constraints = { 
@@ -4273,8 +4273,8 @@ function ReceiveMessage(message) {
             LastActivity: dateNow,
             ExtensionNumber: did,
             MobileNumber: "",
-            ContactNumber1: "",
-            ContactNumber2: "",
+            HomeNumber: "",
+            WorkNumber: "",
             uID: id,
             cID: null,
             gID: null,
@@ -4825,8 +4825,8 @@ function AudioCallMenu(buddy, obj){
             {id: 1, name: "<i class=\"fa fa-phone-square\"></i> "+ lang.call_extension, number: buddyObj.ExtNo},
         ];
         if(buddyObj.MobileNumber != null && buddyObj.MobileNumber != "") items.push({id: 2, name: "<i class=\"fa fa-mobile\"></i> "+ lang.call_mobile, number: buddyObj.MobileNumber});
-        if(buddyObj.ContactNumber1 != null && buddyObj.ContactNumber1 != "") items.push({id: 3, name: "<i class=\"fa fa-phone\"></i> "+ lang.call_number, number: buddyObj.ContactNumber1});
-        if(buddyObj.ContactNumber2 != null && buddyObj.ContactNumber2 != "") items.push({id: 4, name: "<i class=\"fa fa-phone\"></i> "+ lang.call_number, number: buddyObj.ContactNumber2});
+        if(buddyObj.HomeNumber != null && buddyObj.HomeNumber != "") items.push({id: 3, name: "<i class=\"fa fa-phone\"></i> "+ lang.call_number, number: buddyObj.HomeNumber});
+        if(buddyObj.WorkNumber != null && buddyObj.WorkNumber != "") items.push({id: 4, name: "<i class=\"fa fa-phone\"></i> "+ lang.call_number, number: buddyObj.WorkNumber});
         dhtmlxPopup.attachList("name,number", items);
         dhtmlxPopup.attachEvent("onClick", function(id){
             var NumberToDial = dhtmlxPopup.getItemData(id).number;
@@ -4838,8 +4838,8 @@ function AudioCallMenu(buddy, obj){
         // Contact
         var items = [];
         if(buddyObj.MobileNumber != null && buddyObj.MobileNumber != "") items.push({id: 1, name: "<i class=\"fa fa-mobile\"></i> "+ lang.call_mobile, number: buddyObj.MobileNumber});
-        if(buddyObj.ContactNumber1 != null && buddyObj.ContactNumber1 != "") items.push({id: 2, name: "<i class=\"fa fa-phone\"></i> "+ lang.call_number, number: buddyObj.ContactNumber1});
-        if(buddyObj.ContactNumber2 != null && buddyObj.ContactNumber2 != "") items.push({id: 3, name: "<i class=\"fa fa-phone\"></i> "+ lang.call_number, number: buddyObj.ContactNumber2});
+        if(buddyObj.HomeNumber != null && buddyObj.HomeNumber != "") items.push({id: 2, name: "<i class=\"fa fa-phone\"></i> "+ lang.call_number, number: buddyObj.HomeNumber});
+        if(buddyObj.WorkNumber != null && buddyObj.WorkNumber != "") items.push({id: 3, name: "<i class=\"fa fa-phone\"></i> "+ lang.call_number, number: buddyObj.WorkNumber});
         dhtmlxPopup.attachList("name,number", items);
         dhtmlxPopup.attachEvent("onClick", function(id){
             var NumberToDial = dhtmlxPopup.getItemData(id).number;
@@ -5534,8 +5534,8 @@ function QuickFindBuddy(obj){
         if(buddyObj.ExtNo.toLowerCase().indexOf(filter.toLowerCase()) > -1) display = true;
         if(buddyObj.Desc.toLowerCase().indexOf(filter.toLowerCase()) > -1) display = true;
         if(buddyObj.MobileNumber.toLowerCase().indexOf(filter.toLowerCase()) > -1) display = true;
-        if(buddyObj.ContactNumber1.toLowerCase().indexOf(filter.toLowerCase()) > -1) display = true;
-        if(buddyObj.ContactNumber2.toLowerCase().indexOf(filter.toLowerCase()) > -1) display = true;
+        if(buddyObj.HomeNumber.toLowerCase().indexOf(filter.toLowerCase()) > -1) display = true;
+        if(buddyObj.WorkNumber.toLowerCase().indexOf(filter.toLowerCase()) > -1) display = true;
         if(display) {
             // Filtered Results
             var iconColor = "#404040";
@@ -5545,8 +5545,8 @@ function QuickFindBuddy(obj){
             menu.push({ id: b, name: "<b>"+ buddyObj.CallerIDName +"</b>", number: null });
             if(buddyObj.ExtNo != "") menu.push({ id: "e"+b, name: "<i class=\"fa fa-phone-square\" style=\"color:"+ iconColor +"\"></i> "+ lang.extension +" ("+ buddyObj.presence +"): "+ buddyObj.ExtNo, number: buddyObj.ExtNo });
             if(buddyObj.MobileNumber != "") menu.push({ id: "m"+b, name: "<i class=\"fa fa-mobile\"></i> "+ lang.mobile +": "+ buddyObj.MobileNumber, number: buddyObj.MobileNumber });
-            if(buddyObj.ContactNumber1 != "") menu.push({ id: "c1"+b, name: "<i class=\"fa fa-phone\"></i> "+ lang.call +": "+ buddyObj.ContactNumber1, number: buddyObj.ContactNumber1 });
-            if(buddyObj.ContactNumber2 != "") menu.push({ id: "c2"+b, name: "<i class=\"fa fa-phone\"></i> "+ lang.call +": "+ buddyObj.ContactNumber2, number: buddyObj.ContactNumber2 });
+            if(buddyObj.HomeNumber != "") menu.push({ id: "c1"+b, name: "<i class=\"fa fa-phone\"></i> "+ lang.call +": "+ buddyObj.HomeNumber, number: buddyObj.HomeNumber });
+            if(buddyObj.WorkNumber != "") menu.push({ id: "c2"+b, name: "<i class=\"fa fa-phone\"></i> "+ lang.call +": "+ buddyObj.WorkNumber, number: buddyObj.WorkNumber });
             menu.push(dhtmlxPopup.separator);
             visibleItems++;
         }
@@ -7339,7 +7339,7 @@ function RefreshLineActivity(lineNum){
 
 // Buddy & Contacts
 // ================
-var Buddy = function(type, identity, CallerIDName, ExtNo, MobileNumber, ContactNumber1, ContactNumber2, LastActivity, desc, Email){
+var Buddy = function(type, identity, CallerIDName, ExtNo, MobileNumber, HomeNumber, WorkNumber, LastActivity, desc, Email){
     this.type = type; // extension | contact | group
     this.identity = identity;
     this.CallerIDName = CallerIDName;
@@ -7347,8 +7347,8 @@ var Buddy = function(type, identity, CallerIDName, ExtNo, MobileNumber, ContactN
     this.Desc = desc;
     this.ExtNo = ExtNo;
     this.MobileNumber = MobileNumber;
-    this.ContactNumber1 = ContactNumber1;
-    this.ContactNumber2 = ContactNumber2;
+    this.HomeNumber = HomeNumber;
+    this.WorkNumber = WorkNumber;
     this.LastActivity = LastActivity; // Full Date as string eg "1208-03-21 15:34:23 UTC"
     this.devState = "dotOffline";
     this.presence = "Unknown";
@@ -7387,8 +7387,8 @@ function MakeBuddy(type, update, focus, subscribe, callerID, did, addtolist){
             LastActivity: dateNow,
             ExtensionNumber: "", 
             MobileNumber: "",
-            ContactNumber1: did,
-            ContactNumber2: "",
+            HomeNumber: did,
+            WorkNumber: "",
             uID: null,
             cID: id,
             gID: null,
@@ -7414,8 +7414,8 @@ function MakeBuddy(type, update, focus, subscribe, callerID, did, addtolist){
             LastActivity: dateNow,
             ExtensionNumber: did,
             MobileNumber: "",
-            ContactNumber1: "",
-            ContactNumber2: "",
+            HomeNumber: "",
+            WorkNumber: "",
             uID: id,
             cID: null,
             gID: null,
@@ -7506,7 +7506,7 @@ function PopulateBuddiesIssabel(buddies){
                 LastActivity = lastAct[item.uID];
             }
 
-            var buddy = new Buddy("extension", item.ExtensionNumber, item.DisplayName, item.ExtensionNumber, item.MobileNumber, item.ContactNumber1, item.ContactNumber2, LastActivity, item.Description, item.Email);
+            var buddy = new Buddy("extension", item.ExtensionNumber, item.DisplayName, item.ExtensionNumber, item.MobileNumber, item.HomeNumber, item.WorkNumber, LastActivity, item.Description, item.Email);
             AddBuddy(buddy, false, false);
 
             for (var key in buddy) {
@@ -7525,7 +7525,7 @@ function PopulateBuddiesIssabel(buddies){
             }
 
             contactId = jq(item.DisplayName).substr(1);
-            var buddy = new Buddy("contact", contactId, item.DisplayName, "", item.MobileNumber, item.ContactNumber1, item.ContactNumber2, LastActivity, item.Description, item.Email);
+            var buddy = new Buddy("contact", contactId, item.DisplayName, "", item.MobileNumber, item.HomeNumber, item.WorkNumber, LastActivity, item.Description, item.Email);
             AddBuddy(buddy, false, false);
             for (var key in buddy) {
                 if (buddy.hasOwnProperty(key)) {
@@ -7565,12 +7565,12 @@ function PopulateBuddyList() {
     $.each(json.DataCollection, function (i, item) {
         if(item.Type == "extension"){
             // extension
-            var buddy = new Buddy("extension", item.uID, item.DisplayName, item.ExtensionNumber, item.MobileNumber, item.ContactNumber1, item.ContactNumber2, item.LastActivity, item.Position, item.Email);
+            var buddy = new Buddy("extension", item.uID, item.DisplayName, item.ExtensionNumber, item.MobileNumber, item.HomeNumber, item.WorkNumber, item.LastActivity, item.Position, item.Email);
             AddBuddy(buddy, false, false);
         }
         else if(item.Type == "contact"){
             // contact
-            var buddy = new Buddy("contact", item.cID, item.DisplayName, "", item.MobileNumber, item.ContactNumber1, item.ContactNumber2, item.LastActivity, item.Description, item.Email);
+            var buddy = new Buddy("contact", item.cID, item.DisplayName, "", item.MobileNumber, item.HomeNumber, item.WorkNumber, item.LastActivity, item.Description, item.Email);
             AddBuddy(buddy, false, false);
         }
         else if(item.Type == "group"){
@@ -8058,7 +8058,7 @@ function RemoveBuddy(buddy){
 function FindBuddyByDid(did){
     // Used only in Inboud
     for(var b = 0; b < Buddies.length; b++){
-        if(Buddies[b].ExtNo == did || Buddies[b].MobileNumber == did || Buddies[b].ContactNumber1 == did || Buddies[b].ContactNumber2 == did) {
+        if(Buddies[b].ExtNo == did || Buddies[b].MobileNumber == did || Buddies[b].HomeNumber == did || Buddies[b].WorkNumber == did) {
             return Buddies[b];
         }
     }
@@ -8074,7 +8074,7 @@ function FindBuddyByNumber(number){
     // Number could be: +XXXXXXXXXX
     // Any special characters must be removed prior to adding
     for(var b = 0; b < Buddies.length; b++){
-        if(Buddies[b].MobileNumber == number || Buddies[b].ContactNumber1 == number || Buddies[b].ContactNumber2 == number) {
+        if(Buddies[b].MobileNumber == number || Buddies[b].HomeNumber == number || Buddies[b].WorkNumber == number) {
             return Buddies[b];
         }
     }
@@ -9365,13 +9365,13 @@ function ShowBuddyProfileMenu(buddy, obj, typeStr){
             $("#ProfileInfo").append("<div class=ProfileTextSmall style=\"margin-top:15px\">"+ lang.mobile +":</div>");
             $("#ProfileInfo").append("<div class=ProfileTextMedium>"+ buddyObj.MobileNumber +" </div>");
         }
-        if(buddyObj.ContactNumber1 && buddyObj.ContactNumber1 != "null" && buddyObj.ContactNumber1 != "undefined"){
+        if(buddyObj.HomeNumber && buddyObj.HomeNumber != "null" && buddyObj.HomeNumber != "undefined"){
             $("#ProfileInfo").append("<div class=ProfileTextSmall style=\"margin-top:15px\">"+ lang.alternative_contact +":</div>");
-            $("#ProfileInfo").append("<div class=ProfileTextMedium>"+ buddyObj.ContactNumber1 +" </div>");
+            $("#ProfileInfo").append("<div class=ProfileTextMedium>"+ buddyObj.HomeNumber +" </div>");
         }
-        if(buddyObj.ContactNumber2 && buddyObj.ContactNumber2 != "null" && buddyObj.ContactNumber2 != "undefined"){
+        if(buddyObj.WorkNumber && buddyObj.WorkNumber != "null" && buddyObj.WorkNumber != "undefined"){
             $("#ProfileInfo").append("<div class=ProfileTextSmall style=\"margin-top:15px\">"+ lang.alternative_contact +":</div>");
-            $("#ProfileInfo").append("<div class=ProfileTextMedium>"+ buddyObj.ContactNumber2 +" </div>");
+            $("#ProfileInfo").append("<div class=ProfileTextMedium>"+ buddyObj.WorkNumber +" </div>");
         }
     }
     else if(typeStr == "contact"){
@@ -9393,13 +9393,13 @@ function ShowBuddyProfileMenu(buddy, obj, typeStr){
             $("#ProfileInfo").append("<div class=ProfileTextSmall style=\"margin-top:15px\">"+ lang.mobile +":</div>");
             $("#ProfileInfo").append("<div class=ProfileTextMedium>"+ buddyObj.MobileNumber +" </div>");
         }
-        if(buddyObj.ContactNumber1 && buddyObj.ContactNumber1 != "null" && buddyObj.ContactNumber1 != "undefined"){
+        if(buddyObj.HomeNumber && buddyObj.HomeNumber != "null" && buddyObj.HomeNumber != "undefined"){
             $("#ProfileInfo").append("<div class=ProfileTextSmall style=\"margin-top:15px\">"+ lang.alternative_contact +":</div>");
-            $("#ProfileInfo").append("<div class=ProfileTextMedium>"+ buddyObj.ContactNumber1 +" </div>");
+            $("#ProfileInfo").append("<div class=ProfileTextMedium>"+ buddyObj.HomeNumber +" </div>");
         }
-        if(buddyObj.ContactNumber2 && buddyObj.ContactNumber2 != "null" && buddyObj.ContactNumber2 != "undefined"){
+        if(buddyObj.WorkNumber && buddyObj.WorkNumber != "null" && buddyObj.WorkNumber != "undefined"){
             $("#ProfileInfo").append("<div class=ProfileTextSmall style=\"margin-top:15px\">"+ lang.alternative_contact +":</div>");
-            $("#ProfileInfo").append("<div class=ProfileTextMedium>"+ buddyObj.ContactNumber2 +" </div>");
+            $("#ProfileInfo").append("<div class=ProfileTextMedium>"+ buddyObj.WorkNumber +" </div>");
         }
     }
     else if(typeStr == "group"){

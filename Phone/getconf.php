@@ -83,7 +83,7 @@ foreach($external as $data) {
     $contact_name = $data['name'].' '.$data['lastname'];
     $contact_name = preg_replace('/ /','_',$contact_name);
     $contact_name = preg_replace('/(:|\.|\[|\]|,|=|@|\*)/', '\\\\${1}',$contact_name);
-    $info = array("ExtensionNumber"=>'',"MobileNumber"=>$data["cell_phone"],"ContactNumber1"=>$data['telefono'],"ContactNumber2"=>$data['home_phone'],"DisplayName"=>$data['name'].' '.$data['lastname'], "Email"=>$data['email'], "Description"=> $data['company'], "type"=>"contact", "cID"=>$contact_name);
+    $info = array("ExtensionNumber"=>'',"MobileNumber"=>$data["cell_phone"],"HomeNumber"=>$data['home_phone'],"WorkNumber"=>$data['telefono'],"DisplayName"=>$data['name'].' '.$data['lastname'], "Email"=>$data['email'], "Description"=> $data['company'], "type"=>"contact", "cID"=>$contact_name);
     $final[] = $info;
 }
 
@@ -91,7 +91,7 @@ foreach($external as $data) {
 $internal = $padress_book->getDeviceFreePBX_Completed($dsnAsterisk, 10000,0,'','');
 foreach($internal as $idx=>$data) {
     if($data['id']==$extension) continue;
-    $info = array("uID"=>$data['id'],"ExtensionNumber"=>$data['id'],"DisplayName"=>$data['description'],"Email"=>$data['email'],"Description"=>$data['description'],"type"=>"extension");
+    $info = array("uID"=>$data['id'],"ExtensionNumber"=>$data['id'],"DisplayName"=>$data['description'],"Email"=>$data['email'],"Description"=>$data['description'],"MobileNumber"=>$data["cell_phone"],"HomeNumber"=>$data['home_phone'],"type"=>"extension");
     $final[] = $info;
 }
 
