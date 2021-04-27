@@ -2482,8 +2482,7 @@ function wireupAudioSession(lineObj) {
             }
             session.data.earlyMedia = earlyMedia;
         } else {
-            reason = typeof(lang[response.reason_phrase])=='undefined'?response.reason_phrase:lang[response.reason_phrase];
-            $(MessageObjId).html(reason + "...");
+            $(MessageObjId).html(trans(response.reason_phrase) + "...");
         }
 
         // Custom Web hook
@@ -2824,7 +2823,7 @@ function teardownSession(lineObj, reasonCode, reasonText) {
     session.data.teardownComplete = true; // Run this code only once
 
     session.data.reasonCode = reasonCode
-    session.data.reasonText = reasonText
+    session.data.reasonText = trans(reasonText)
     // Call UI
     HidePopup();
 
@@ -2872,7 +2871,7 @@ function teardownSession(lineObj, reasonCode, reasonText) {
     window.clearInterval(session.data.callTimer);
 
     // Add to stream
-    AddCallMessage(lineObj.BuddyObj.identity, session, reasonCode, reasonText);
+    AddCallMessage(lineObj.BuddyObj.identity, session, reasonCode, trans(reasonText));
 
     // Close up the UI
     window.setTimeout(function () {
@@ -10720,6 +10719,12 @@ function HidePopup(timeout){
 function addHistory(clid,did) {
    console.log("add history "+clid+", "+did);
 }
+
+function trans(msg) {
+    reason = typeof(lang[msg])=='undefined'?msg:lang[msg];
+    return reason
+}
+
 function jq( myid ) {
     myid = myid.replace(/ /g,"_");
     return "#" + myid.replace( /(:|\.|\[|\]|,|=|@|\*)/g, "\\$1" );
