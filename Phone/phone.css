@@ -2026,7 +2026,7 @@ div.dhx_popup_material div.dhx_popup_area {
 .dialTextInput{
     font-size: 16px;
     text-align: center;
-    border-radius: 1px;
+    border-radius: 5px;
     border: none;
     background-color: #DDD;
     outline-color: #cbe4ff;
