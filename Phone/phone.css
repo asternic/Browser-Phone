@@ -187,11 +187,12 @@
     height: 43px;
     border: 1px solid #b08ab5;
     color: #000;
-    border-radius:100px;
+    border-radius:50%;
+    box-shadow: 0 3px #2e1252;
 }
 .dtmfButtons:hover{
-    color: #FFFFFF;
-    background-color: #222222;
+    transform: translateY(2px);
+    box-shadow: 0 1px #2e1252;
 }
 .dtmfButtons:active{
     color: #cccccc;
@@ -2024,12 +2025,12 @@ div.dhx_popup_material div.dhx_popup_area {
 }
 
 .dialTextInput{
-    font-size: 16px;
+    font-size: 1.2em;
     text-align: center;
     border-radius: 5px;
     border: none;
-    background-color: #DDD;
-    outline-color: #cbe4ff;
+    background-color: #bfa3d4;
+    outline-color: #443b63;
     width:100%;
 }
 .dialButtons{
