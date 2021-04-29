@@ -85,7 +85,7 @@
     "incomming_call_from" : "Llamada entrante de:",
     "answer_call" : "Atender",
     "answer_call_with_video" : "Atender con Video",
-    "reject_call" : "Llamada Rechazada",
+    "reject_call" : "Rechazar Llamada",
     "call_failed" : "Llamada Fallida",
     "alert_no_microphone" : "Lo lamento, no es posible recibir llamadas sin micrófono conectado.",
     "call_in_progress" : "Llamada en progreso!",
