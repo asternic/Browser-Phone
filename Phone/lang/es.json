@@ -276,5 +276,6 @@
     "Session Progress": "Sesión en Progreso",
     "Service Unavailable": "Servicio no Disponible",
     "inbound": "entrante",
-    "outbound": "saliente"
+    "outbound": "saliente",
+    "close": "Cerrar"
 }

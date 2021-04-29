@@ -2140,7 +2140,7 @@ function ReceiveCall(session) {
             // Reject the call
             RejectCall(buddyObj.identity);
             CloseWindow();
-        }, "Close", function(){
+        }, lang.close, function(){
             // Let it ring
             CloseWindow();
         }, null, null);
