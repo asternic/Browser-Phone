@@ -8332,7 +8332,7 @@ function RefreshStream(buddyObj, filter) {
             else {
                 // (Inbound) you(profileUserID) received a call
                 if(item.Billsec == "0"){
-                    formattedMessage += " "+ lang.you_missed_a_call + " ("+ item.ReasonText +").";
+                    formattedMessage += " "+ lang.you_missed_a_call + " ("+ trans(item.ReasonText) +").";
                 } 
                 else {
                     formattedMessage += " "+ lang.you_recieved + " "+ audioVideo +", "+ lang.and_spoke_for +" " + formatDuration(item.Billsec) + ".";

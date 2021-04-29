@@ -277,5 +277,6 @@
     "Service Unavailable": "Servicio no Disponible",
     "inbound": "entrante",
     "outbound": "saliente",
-    "close": "Cerrar"
+    "close": "Cerrar",
+    "Busy Here": "Ocupado"
 }
