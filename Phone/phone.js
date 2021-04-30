@@ -1351,6 +1351,7 @@ function HandleNotifyPermission(p){
     }
 }
 function EditBuddyWindow(buddy){
+    return;
     try{
         dhtmlxPopup.hide();
     }
