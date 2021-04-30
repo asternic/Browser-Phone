@@ -7809,7 +7809,7 @@ function AddBuddyMessageStream(buddyObj) {
 
 
 
-    if((buddyObj.type == "extension" || buddyObj.type == "group") && EnableTextMessaging) {
+    if((buddyObj.type == "extension" ) && EnableTextMessaging) {
         html += "<tr><td  class=streamSection style=\"height:80px\">";
 
         // Send Paste Image
