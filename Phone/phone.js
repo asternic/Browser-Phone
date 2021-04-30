@@ -6845,8 +6845,13 @@ function handleDialInput(obj, event){
         $("#dialText").val($("#dialText").val().replace(/[^\d\*\#\+]/g, "").substring(0,MaxDidLength));
     }
     $("#dialVideo").prop('disabled', ($("#dialText").val().length >= DidLength));
+
+    num = event.key.replace(/[^\d\*\#\+]/g, "");
+    if(num!='') {
+        PlayDTMFSound(num);
+    }
 }
-function KeyPress(num){
+function PlayDTMFSound(num) {
     sndindex = num;
     if(num=='*') { sndindex='s'; }
     if(num=='#') { sndindex='h'; }
@@ -6854,7 +6859,10 @@ function KeyPress(num){
     var soundFile = audioBlobs['dtmf_'+sndindex];
     var dtmfSound = new Audio(soundFile.blob);
     dtmfSound.play();
+}
 
+function KeyPress(num){
+    PlayDTMFSound(num);
     $("#dialText").val(($("#dialText").val()+num).substring(0,MaxDidLength));
     $("#dialVideo").prop('disabled', ($("#dialText").val().length >= DidLength));
 }
