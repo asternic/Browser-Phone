@@ -278,5 +278,6 @@
     "inbound": "entrante",
     "outbound": "saliente",
     "close": "Cerrar",
-    "Busy Here": "Ocupado"
+    "Busy Here": "Ocupado",
+    "Canceled": "Cancelada"
 }
