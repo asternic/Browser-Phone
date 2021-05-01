@@ -1653,6 +1653,7 @@ function InitUi(){
        } else {
 
           profileUserID = data.extension;
+          chatenabled = data.chatenabled;
           wssServer = location.host.split(":")[0];
           WebSocketPort = 8089;
           ServerPath = '/ws';
