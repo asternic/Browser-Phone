@@ -192,7 +192,7 @@ var SpeakerDevices = [];
 var Lines = [];
 var lang = {}
 var audioBlobs = {}
-
+var chatenabled = [];
 
 // Upgrade Pataches
 // ================
@@ -7818,7 +7818,7 @@ function AddBuddyMessageStream(buddyObj) {
 
 
 
-    if((buddyObj.type == "extension" ) && EnableTextMessaging) {
+    if((buddyObj.type == "extension" ) && EnableTextMessaging && (chatenabled.indexOf(buddyObj.identity)>=0)) {
         html += "<tr><td  class=streamSection style=\"height:80px\">";
 
         // Send Paste Image

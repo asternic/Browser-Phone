@@ -105,7 +105,16 @@ $query = "SELECT `data` FROM sip WHERE keyword='secret' AND id='$extension'";
 $row = $pDB->getFirstRowQuery($query, false, array());
 $secret = $row[0];
 
+// Enable chat only on extensions with textmessages context
+$has_chat=array();
+$query = "SELECT id FROM sip WHERE keyword = ? AND data = ? ";
+$result=$pDB->fetchTable($query, true, array('message_context','textmessages'));
+foreach($result as $result) {
+   $has_chat[]=$result['id'];
+}
+$chatenabled = json_encode($has_chat);
 
-echo '{"success":true, "extension": "'.$extension.'","name":"'.$nombre.'", "secret":"'.$secret.'", "dnd": "'.$statusDND.'" ,"buddies":'.$buddies.'}';
+echo '{"success":true, "extension": "'.$extension.'","name":"'.$nombre.'", "secret":"'.$secret.'", "dnd": "'.$statusDND.'" ,"buddies":'.$buddies.',"chatenabled":'.$chatenabled.'}';
+
 unset($_SESSION);
 session_commit();
