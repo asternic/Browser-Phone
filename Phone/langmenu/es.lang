@@ -1,0 +1,4 @@
+<?php
+$arrLangMenu=array(
+"Web Phone" => "Teléfono Web"
+);
