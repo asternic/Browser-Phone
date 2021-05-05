@@ -132,7 +132,7 @@ var RecordingVideoSize = getDbItem("RecordingVideoSize", "HD");             // T
 var RecordingVideoFps = parseInt(getDbItem("RecordingVideoFps", 12));       // The Frame Per Second of the Video Track recording
 var RecordingLayout = getDbItem("RecordingLayout", "them-pnp");             // The Layout of the Recording Video Track (side-by-side | us-pnp | them-pnp | us-only | them-only)
 
-var DidLength = parseInt(getDbItem("DidLength", 6));                 // DID length from which to decide if an incoming caller is a "contact" or an "extension".
+var DidLength = parseInt(getDbItem("DidLength", 1));                 // DID length from which to decide if an incoming caller is a "contact" or an "extension".
 var MaxDidLength = parseInt(getDbItem("maximumNumberLength", 16));   // Maximum langth of any DID number including international dialled numbers.
 var DisplayDateFormat = getDbItem("DateFormat", "YYYY-MM-DD");  // The display format for all dates. https://momentjs.com/docs/#/displaying/
 var DisplayTimeFormat = getDbItem("TimeFormat", "h:mm:ss A");    // The display format for all times. https://momentjs.com/docs/#/displaying/
