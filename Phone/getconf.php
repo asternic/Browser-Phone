@@ -82,7 +82,7 @@ $final=array();
 foreach($external as $data) {
     $contact_name = $data['name'].' '.$data['last_name'];
     $contact_name = preg_replace('/ /','_',$contact_name);
-    $contact_name = preg_replace('/(:|\.|\[|\]|,|=|@|\*)/', '\\\\${1}',$contact_name);
+    $contact_name = preg_replace('/(:|\.|\[|\]|,|=|@|\*|#)/', '\\\\${1}',$contact_name);
     $info = array("ExtensionNumber"=>'',"MobileNumber"=>$data["cell_phone"],"HomeNumber"=>$data['home_phone'],"WorkNumber"=>$data['telefono'],"DisplayName"=>$data['name'].' '.$data['last_name'], "Email"=>$data['email'], "Description"=> $data['company'], "type"=>"contact", "cID"=>$contact_name);
     $final[] = $info;
 }

@@ -10738,7 +10738,7 @@ function trans(msg) {
 
 function jq( myid ) {
     myid = myid.replace(/ /g,"_");
-    return "#" + myid.replace( /(:|\.|\[|\]|,|=|@|\*)/g, "\\$1" );
+    return "#" + myid.replace( /(:|\.|\[|\]|,|=|@|\*|#)/g, "\\$1" );
 }
 // Device Detection
 // ================
