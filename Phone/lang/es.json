@@ -279,5 +279,6 @@
     "outbound": "saliente",
     "close": "Cerrar",
     "Busy Here": "Ocupado",
-    "Canceled": "Cancelada"
+    "Canceled": "Cancelada",
+    "not_registered": "Dispositivo no registrado"
 }

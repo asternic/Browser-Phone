@@ -273,5 +273,8 @@
     "invalid_session": "Invalid Session. Please log back into Issabel",
     "cancelled_by_caller": "Cancelled by caller",
     "normal_call_clearing": "Normal Call clearing",
-    "close": "Close"
+    "close": "Close",
+    "Busy Here": "Busy Here",
+    "Canceled": "Canceled",
+    "not_registered": "Endpoint is not registered"
 }

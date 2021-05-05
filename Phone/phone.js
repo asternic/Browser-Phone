@@ -6869,7 +6869,7 @@ function KeyPress(num){
 }
 function DialByLine(type, buddy, numToDial, CallerID){
     if(userAgent == null || userAgent.isRegistered()==false){
-        ConfigureExtensionWindow();
+        Alert(lang.not_registered,lang.warning);
         return;
     }
 
