@@ -193,6 +193,7 @@ var Lines = [];
 var lang = {}
 var audioBlobs = {}
 var chatenabled = [];
+var dtmfline = 0;
 
 // Upgrade Pataches
 // ================
@@ -6333,8 +6334,10 @@ function endSession(lineNum) {
     updateLineScroll(lineNum);
 }
 function sendDTMF(lineNum, itemStr) {
+console.log('send dtmf 1');
     var lineObj = FindLineByNumber(lineNum);
     if(lineObj == null || lineObj.SipSession == null) return;
+console.log('send dtmf 2');
 
     console.log("Sending DTMF ("+ itemStr +"): "+ lineNum);
     lineObj.SipSession.dtmf(itemStr);
@@ -6343,6 +6346,8 @@ function sendDTMF(lineNum, itemStr) {
 
     updateLineScroll(lineNum);
 
+    if(itemStr=='*') { itemStr='s'; }
+    if(itemStr=='#') { itemStr='h'; }
     var soundFile = audioBlobs['dtmf_'+itemStr];
     var dtmfSound = new Audio(soundFile.blob);
     dtmfSound.play();
@@ -8514,7 +8519,7 @@ function ShowDtmfMenu(obj, lineNum){
 
     HidePopup();
     dhtmlxPopup = new dhtmlXPopup();
-    var html = "<div style=\"margin-top:15px; margin-bottom:15px\">";
+    var html = "<div style=\"margin-top:15px; margin-bottom:15px\" id='oncalldtmf'>";
     html += "<table cellspacing=10 cellpadding=0 style=\"margin-left:auto; margin-right: auto\">";
     html += "<tr><td><button class=dtmfButtons style='color:#FFF;' onclick=\"sendDTMF('"+ lineNum +"', '1')\"><div>1</div><span>&nbsp;</span></button></td>"
     html += "<td><button class=dtmfButtons style='background-color: #54BEC9;' onclick=\"sendDTMF('"+ lineNum +"', '2')\"><div>2</div><span>ABC</span></button></td>"
@@ -8532,6 +8537,9 @@ function ShowDtmfMenu(obj, lineNum){
     html += "</div>";
     dhtmlxPopup.attachHTML(html);
     dhtmlxPopup.show(x, y, w, h);
+
+    dtmfLine = lineNum;
+
     $('.dhx_popup_area').css('backgroundColor','#443B63');
 }
 
@@ -10776,6 +10784,18 @@ DetectDevices();
 window.setInterval(function(){
     DetectDevices();
 }, 10000);
+
+document.addEventListener("keypress", function onPress(event) {
+    sndindex = event.key;
+    var final = sndindex.replace(/[^0-9\*\#\+]/g,'');
+    if(final!='') {
+        if($('#oncalldtmf').is(':visible')===true) {
+            sendDTMF( dtmfLine , sndindex);
+        } else {
+            dtmfLine = 0;
+        }
+    }
+});
 
 // STATUS_NULL: 0
 // STATUS_INVITE_SENT: 1
