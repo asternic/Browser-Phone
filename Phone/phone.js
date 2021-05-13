@@ -4256,8 +4256,8 @@ function ReceiveMessage(message) {
     if(did.length > DidLength) {
         // Contacts cannot receive Test Messages, because they cannot reply
         // This may change with FAX, Email, WhatsApp etc
-        console.warn("DID length greater then extensions length")
-        return;
+        // console.warn("DID length greater then extensions length")
+        // return;
     }
 
     var CurrentCalls = countSessions("0");
