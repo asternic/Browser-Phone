@@ -6850,7 +6850,7 @@ function handleDialInput(obj, event){
 
         $("#dialText").val($("#dialText").val().replace(/[^\d\*\#\+]/g, "").substring(0,MaxDidLength));
     }
-    $("#dialVideo").prop('disabled', ($("#dialText").val().length >= DidLength));
+    // $("#dialVideo").prop('disabled', ($("#dialText").val().length >= DidLength));
 
     num = event.key.replace(/[^\d\*\#\+]/g, "");
     if(num!='') {
@@ -6870,7 +6870,7 @@ function PlayDTMFSound(num) {
 function KeyPress(num){
     PlayDTMFSound(num);
     $("#dialText").val(($("#dialText").val()+num).substring(0,MaxDidLength));
-    $("#dialVideo").prop('disabled', ($("#dialText").val().length >= DidLength));
+    // $("#dialVideo").prop('disabled', ($("#dialText").val().length >= DidLength));
 }
 function DialByLine(type, buddy, numToDial, CallerID){
     if(userAgent == null || userAgent.isRegistered()==false){
