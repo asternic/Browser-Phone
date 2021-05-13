@@ -2139,7 +2139,7 @@ function ReceiveCall(session) {
             callAnswerHtml += "<div style=\"margin-top:15px\"><button onclick=\"AnswerVideoCall('"+ buddyObj.identity +"')\" class=answerButton><i class=\"fa fa-video-camera\"></i> "+ lang.answer_call_with_video +"</button></div>";
         }
         callAnswerHtml += "</div>";
-        OpenWindow(callAnswerHtml, lang.incomming_call_from, 350, 300, true, false, lang.reject_call, function(){
+        OpenWindow(callAnswerHtml, lang.incomming_call_from, 380, 320, true, false, lang.reject_call, function(){
             // Reject the call
             RejectCall(buddyObj.identity);
             CloseWindow();
